@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rasenmäher Spiel</title>
+    <title>RasenRasen Test für lucapleger.com</title>
     <style>
         * {
             margin: 0;
@@ -79,7 +79,8 @@
         let startmowerPositionY = (canvas.height / 2) - (mowerSize / 2);
         let mowerRotation = 0;
         let targetRotation = 0;
-
+        const rasenPartikelAnzahl = 300;
+        let rasenPositionen = [{}];
         let keysState = {};
 
         // Fügen Sie Eventlistener für keydown und keyup hinzu
@@ -128,23 +129,39 @@
                 motionX = motionX / 2;
                 motionY = motionY / 2;
                 targetRotation = 45;
-            }else if (keysState[83] && keysState[65]) {
+            } else if (keysState[83] && keysState[65]) {
                 motionX = motionX / 2;
                 motionY = motionY / 2;
                 targetRotation = 135;
-            }else if (keysState[87] && keysState[65]) {
+            } else if (keysState[87] && keysState[65]) {
                 motionX = motionX / 2;
                 motionY = motionY / 2;
                 targetRotation = -135;
             }
         }
 
+        /* Developer Anzeige */
         setInterval(() => {
             document.getElementById('dev_anzeige').textContent = 'Motion-X: ' + motionX + ' Motion-Y: ' + motionY + ' Rotation: ' + mowerRotation + ' Engine-FPS: ' + fps + ' FPS: ' + displayRenderFPS;
         }, 100);
 
         canvas.style.top = (window.innerHeight / 2) - (canvas.height / 2);
         canvas.style.left = (window.innerWidth / 2) - (canvas.width / 2);
+
+        function getRandomInteger(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        function initialRasenFlaeche() {
+            for (let index = 0; index < rasenPartikelAnzahl; index++) {
+                const RandPosX = getRandomInteger(1, canvas.width);
+                const RandPosY = getRandomInteger(1, canvas.height);
+
+                rasenPositionen.push([RandPosX, RandPosY]);
+            }
+        }
+
+        initialRasenFlaeche();
 
         function gamelogic() {
             startmowerPositionX += motionX;
@@ -174,6 +191,11 @@
         function animate() {
             renderFPS++; /* Rendered FPS analysis */
             ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            rasenPositionen.forEach(element => {
+                ctx.fillStyle = "rgb(78, 105, 24)";
+                ctx.fillRect(element[0], element[1], 10, 10); // x, y, width, height
+            });
 
             // Den Ursprung auf die Mitte des Bildes verschieben
             ctx.translate(startmowerPositionX + mowerSize / 2, startmowerPositionY + mowerSize / 2);
