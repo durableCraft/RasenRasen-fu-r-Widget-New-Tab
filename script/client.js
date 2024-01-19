@@ -22,6 +22,9 @@ let targetRotation = 0;
 const rasenPartikelAnzahl = 300;
 let rasenPositionen = {};
 let keysState = {};
+const mowerURL = [
+    ''
+]
 let mowerColor = 0;
 let clientInfo = [startmowerPositionX, startmowerPositionY, mowerColor];
 let serverInfo = {};

@@ -29,7 +29,6 @@ body {
     margin: 50px;
     display: block;
 
-    /* border-image: url('../images/fence.png') fill 20 20 20 20 / 30px / 30px round; */
     border: 100px solid outset;
     border-image: url('../images/fence.png') 100 / 100px / 75px round;
     background: rgb(146, 186, 66);
