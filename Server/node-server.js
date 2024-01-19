@@ -38,6 +38,11 @@ app.get('/images/mower.png', (req, res) => {
     res.sendFile(indexPath);
 });
 
+app.get('/images/fence.png', (req, res) => {
+    const indexPath = path.join(currentWorkingDirectory, '..', 'images', 'fence.png');
+    res.sendFile(indexPath);
+});
+
 app.get('/script/socket.io.js', (req, res) => {
     const indexPath = path.join(currentWorkingDirectory, '..', 'script', 'socket.io.js');
     res.sendFile(indexPath);

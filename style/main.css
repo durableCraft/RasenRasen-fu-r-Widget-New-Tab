@@ -4,8 +4,12 @@
     box-sizing: border-box;
 
     overflow: hidden;
+
     user-select: none;
     -webkit-user-select: none;
+
+    image-rendering: pixelated;
+    image-rendering: -webkit-optimize-contrast;
 }
 
 body {
@@ -22,10 +26,12 @@ body {
     top: 0;
     left: 0;
 
-    outline: 10px solid rgb(126, 83, 48);
     margin: 50px;
     display: block;
 
+    /* border-image: url('../images/fence.png') fill 20 20 20 20 / 30px / 30px round; */
+    border: 100px solid outset;
+    border-image: url('../images/fence.png') 100 / 100px / 75px round;
     background: rgb(146, 186, 66);
     image-rendering: pixelated;
     image-rendering: -webkit-optimize-contrast;
