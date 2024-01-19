@@ -2,7 +2,6 @@ const express = require('express');
 const http = require('http');
 const socketIO = require('socket.io');
 const path = require('path');
-const fs = require('fs');
 const rateLimit = require('express-rate-limit');
 
 const app = express();
@@ -35,7 +34,17 @@ app.get('/', (req, res) => {
 app.get('/images/mower.png', (req, res) => {
     const indexPath = path.join(currentWorkingDirectory, '..', 'images', 'mower.png');
     res.sendFile(indexPath);
-})
+});
+
+app.get('/script/socket.io.js', (req, res) => {
+    const indexPath = path.join(currentWorkingDirectory, '..', 'script', 'socket.io.js');
+    res.sendFile(indexPath);
+});
+
+app.get('/script/client.js', (req, res) => {
+    const indexPath = path.join(currentWorkingDirectory, '..', 'script', 'client.js');
+    res.sendFile(indexPath);
+});
 
 const rasenPartikelAnzahl = 300;
 let rasenPositionen = {};
@@ -95,9 +104,11 @@ io.on('connection', (socket) => {
         socket.emit('serverInfo', serverInfo);
     }, 1000 / fps);
 
+    /* Rasenpartikel senden */
+    socket.emit('rasenPartikel', rasenPositionen);
     setInterval(() => {
         socket.emit('rasenPartikel', rasenPositionen);
-    }, 100);
+    }, 250);
 
     setInterval(() => {
         if (Object.keys(rasenPositionen).length < (rasenPartikelAnzahl - 50)) {
@@ -107,6 +118,6 @@ io.on('connection', (socket) => {
     }, 500);
 });
 
-server.listen(3000, () => {
-    console.log('Server läuft auf http://localhost:3000');
+server.listen(80, () => {
+    console.log('Server läuft auf Port 80');
 });
