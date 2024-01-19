@@ -37,8 +37,8 @@ app.get('/images/mower.png', (req, res) => {
     res.sendFile(indexPath);
 })
 
-/* const rasenPartikelAnzahl = 300;
-let rasenPositionen = [{}];
+const rasenPartikelAnzahl = 300;
+let rasenPositionen = {};
 
 function getRandomInteger(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -46,32 +46,65 @@ function getRandomInteger(min, max) {
 
 function initialRasenFlaeche(amount) {
     for (let index = 0; index < amount; index++) {
-        const RandPosX = getRandomInteger(1, canvas.width);
-        const RandPosY = getRandomInteger(1, canvas.height);
+        const RandPosX = getRandomInteger(1, 1920);
+        const RandPosY = getRandomInteger(1, 1080);
 
-        rasenPositionen.push([RandPosX, RandPosY]);
+        rasenPositionen[RandPosX + RandPosY] = [RandPosX, RandPosY];
     }
 }
 
-initialRasenFlaeche(rasenPartikelAnzahl); */
+initialRasenFlaeche(rasenPartikelAnzahl);
 
-let serverInfo = [{}];
-const fps = 60;
+let serverInfo = {};
+const fps = 30;
 
-function gamlogic() {
+function gamelogic(x, y , radius) {
+    /*     const tempArray = rasenPositionen.filter(element =>
+            !(element[0] >= startmowerPositionX + 10 && element[0] <= startmowerPositionX + mowerSize - 10 &&
+                element[1] >= startmowerPositionY + 10 && element[1] <= startmowerPositionY + mowerSize - 10)
+        );
+        score += rasenPositionen.length - tempArray.length;
+        rasenPositionen = tempArray; */
 
+    for (const key in rasenPositionen) {
+        const [objX, objY] = rasenPositionen[key];
+        const abstand = Math.sqrt(Math.pow(objX - x, 2) + Math.pow(objY - y, 2));
+
+        if (abstand <= radius) {
+            delete rasenPositionen[key];
+        }
+    }
 }
 
 io.on('connection', (socket) => {
+    socket.emit('clientID', socket.id);
+
+    socket.on('disconnect', () => {
+        delete serverInfo[socket.id];
+    });
+
+    // Beispiel: Empfange eine Variable vom Client
+    socket.on('clientInfo', (data) => {
+        serverInfo[socket.id] = [data[0], data[1], data[2], data[3]];
+
+        gamelogic(data[0] + 50, data[1] + 50, 40);
+    });
+
     // Beispiel: Sende eine Variable an den Client
     setInterval(() => {
         socket.emit('serverInfo', serverInfo);
     }, 1000 / fps);
 
-    // Beispiel: Empfange eine Variable vom Client
-    socket.on('clientInfo', (data) => {
-        serverInfo.push(data);
-    });
+    setInterval(() => {
+        socket.emit('rasenPartikel', rasenPositionen);
+    }, 100);
+
+    setInterval(() => {
+        if (Object.keys(rasenPositionen).length < (rasenPartikelAnzahl - 50)) {
+            const menge = (rasenPartikelAnzahl - 50) - Object.keys(rasenPositionen).length;
+            initialRasenFlaeche(menge);
+        }
+    }, 500);
 });
 
 server.listen(3000, () => {
