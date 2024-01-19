@@ -170,5 +170,5 @@ io.on('connection', (socket) => {
 });
 
 server.listen(80, () => {
-    console.log('Server läuft auf Port 443');
+    console.log('Server läuft auf Port 80');
 });
