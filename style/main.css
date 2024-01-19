@@ -1,9 +1,21 @@
+@font-face {
+    font-family: silkscreen-regular;
+    src: url('../assets/Silkscreen/Silkscreen-Regular.ttf');
+}
+
+@font-face {
+    font-family: silkscreen-bold;
+    src: url('../assets/Silkscreen/Silkscreen-Bold.ttf');
+}
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 
     overflow: hidden;
+
+    font-family: silkscreen-regular;
 
     user-select: none;
     -webkit-user-select: none;
@@ -18,6 +30,30 @@ body {
 
     height: 100vh;
     width: 100vw;
+}
+
+main {
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    height: 100vh;
+    width: 100vw;
+    padding: 40px;
+
+    background: rgba(0, 0, 0, 0.3);
+    color: rgb(225, 225, 225);
+}
+
+#main_h1 {
+    max-width: 500px;
+    min-width: 200px;
+
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.9);
+}
+
+h3 {
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.9);
 }
 
 #gameCanvas {

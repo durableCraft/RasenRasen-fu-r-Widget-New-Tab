@@ -82,6 +82,16 @@ app.get('/style/main.css', (req, res) => {
     res.sendFile(indexPath);
 });
 
+app.get('/assets/Silkscreen/Silkscreen-Regular.ttf', (req, res) => {
+    const indexPath = path.join(currentWorkingDirectory, '..', 'assets', 'Silkscreen', 'Silkscreen-Regular.ttf');
+    res.sendFile(indexPath);
+});
+
+app.get('/assets/Silkscreen/Silkscreen-Bold.ttf', (req, res) => {
+    const indexPath = path.join(currentWorkingDirectory, '..', 'assets', 'Silkscreen', 'Silkscreen-Bold.ttf');
+    res.sendFile(indexPath);
+});
+
 const rasenPartikelAnzahl = 300;
 let rasenPositionen = {};
 

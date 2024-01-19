@@ -13,6 +13,11 @@
 
     <p id="dev_anzeige" style="display: none;"></p>
 
+    <main id="main_overlay">
+        <h1 id="main_h1">Willkommen auf der offiziellen Webseite von Luca Pleger!</h1>
+        <h3>Hier finden Sie alle meine Projekte.</h3>
+    </main>
+
     <script src="script/socket.io.js"></script>
     <script src="script/client.js"></script>
     <script>
@@ -21,7 +26,7 @@
         window.addEventListener('keyup', function toggleDevTools(event) {
             if (event.keyCode === 114) {
                 event.preventDefault();
-                
+
                 if (document.getElementById('dev_anzeige').style.display === 'none') {
                     document.getElementById('dev_anzeige').style.display = 'block';
                 } else {
