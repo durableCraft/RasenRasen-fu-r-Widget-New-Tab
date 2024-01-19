@@ -4,7 +4,31 @@ const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 ctx.imageSmoothingEnabled = false;
 const mowerImg = new Image;
-mowerImg.src = 'images/mower.png';
+const mowerURL = [
+    'images/mower.png',
+    'images/mower_2.png',
+    'images/mower_3.png',
+    'images/mower_4.png',
+    'images/mower_5.png',
+    'images/mower_6.png',
+    'images/mower_0.png'
+];
+
+const mower0 = new Image;
+mower0.src = mowerURL[6];
+const mower1 = new Image;
+mower1.src = mowerURL[0];
+const mower2 = new Image;
+mower2.src = mowerURL[1];
+const mower3 = new Image;
+mower3.src = mowerURL[2];
+const mower4 = new Image;
+mower4.src = mowerURL[3];
+const mower5 = new Image;
+mower5.src = mowerURL[4];
+const mower6 = new Image;
+mower6.src = mowerURL[5];
+
 let fps = 60; /* Frames per Second */
 let renderFPS = 0;
 let displayRenderFPS = 0;
@@ -22,12 +46,22 @@ let targetRotation = 0;
 const rasenPartikelAnzahl = 300;
 let rasenPositionen = {};
 let keysState = {};
-const mowerURL = [
-    ''
-]
-let mowerColor = 0;
+
+function getMowerColor() {
+    const eastereggnum = Math.floor(Math.random() * 1000);
+    const num = Math.floor(Math.random() * 6);
+
+    if (eastereggnum === 500) {
+        return 6;
+    } else {
+        return num;
+    }
+}
+
+let mowerColor = getMowerColor();
 let clientInfo = [startmowerPositionX, startmowerPositionY, mowerColor];
 let serverInfo = {};
+mowerImg.src = mowerURL[mowerColor];
 
 socket.on('clientID', (data) => {
     clientID = data;
@@ -177,7 +211,42 @@ function animate() {
                 ctx.rotate(serverInfo[key][2] * Math.PI / 180);
 
                 // Das Bild zeichnen (Berücksichtigen Sie die Verschiebung des Ursprungs)
-                ctx.drawImage(mowerImg, -mowerSize / 2, -mowerSize / 2, mowerSize, mowerSize);
+                let differentMower;
+
+                switch (serverInfo[key][3]) {
+                    case 0:
+                        differentMower = mower1;
+                        break;
+
+                    case 1:
+                        differentMower = mower2;
+                        break;
+
+                    case 2:
+                        differentMower = mower3;
+                        break;
+
+                    case 3:
+                        differentMower = mower4;
+                        break;
+
+                    case 4:
+                        differentMower = mower5;
+                        break;
+
+                    case 5:
+                        differentMower = mower6;
+                        break;
+
+                    case 6:
+                        differentMower = mower0;
+                        break;
+
+                    default:
+                        differentMower = mower1;
+                        break;
+                }
+                ctx.drawImage(differentMower, -mowerSize / 2, -mowerSize / 2, mowerSize, mowerSize);
 
                 // Die Transformationen zurücksetzen
                 ctx.rotate(-mowerRotation * Math.PI / 180);
@@ -190,7 +259,7 @@ function animate() {
         }
     }
 
-    canvas.style.transform = 'translate('+ ((window.innerWidth / 2) - startmowerPositionX - 50 - mowerSize / 2) + 'px, '+ ((window.innerHeight / 2) - startmowerPositionY - 50 - mowerSize / 2) +'px)';
+    canvas.style.transform = 'translate(' + ((window.innerWidth / 2) - startmowerPositionX - 50 - mowerSize / 2) + 'px, ' + ((window.innerHeight / 2) - startmowerPositionY - 50 - mowerSize / 2) + 'px)';
 
     requestAnimationFrame(animate);
 }

@@ -37,6 +37,30 @@ app.get('/images/mower.png', (req, res) => {
     const indexPath = path.join(currentWorkingDirectory, '..', 'images', 'mower.png');
     res.sendFile(indexPath);
 });
+app.get('/images/mower_2.png', (req, res) => {
+    const indexPath = path.join(currentWorkingDirectory, '..', 'images', 'mower_2.png');
+    res.sendFile(indexPath);
+});
+app.get('/images/mower_3.png', (req, res) => {
+    const indexPath = path.join(currentWorkingDirectory, '..', 'images', 'mower_3.png');
+    res.sendFile(indexPath);
+});
+app.get('/images/mower_4.png', (req, res) => {
+    const indexPath = path.join(currentWorkingDirectory, '..', 'images', 'mower_4.png');
+    res.sendFile(indexPath);
+});
+app.get('/images/mower_5.png', (req, res) => {
+    const indexPath = path.join(currentWorkingDirectory, '..', 'images', 'mower_5.png');
+    res.sendFile(indexPath);
+});
+app.get('/images/mower_6.png', (req, res) => {
+    const indexPath = path.join(currentWorkingDirectory, '..', 'images', 'mower_6.png');
+    res.sendFile(indexPath);
+});
+app.get('/images/mower_0.png', (req, res) => {
+    const indexPath = path.join(currentWorkingDirectory, '..', 'images', 'mower_0.png');
+    res.sendFile(indexPath);
+});
 
 app.get('/images/fence.png', (req, res) => {
     const indexPath = path.join(currentWorkingDirectory, '..', 'images', 'fence.png');
