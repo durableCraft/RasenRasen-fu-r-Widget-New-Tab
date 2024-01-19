@@ -86,6 +86,32 @@ window.addEventListener('keyup', function (event) {
     updateMotionAndRotation();
 });
 
+function emulateKeyPress(keyCode) {
+    keysState[keyCode] = true;
+    updateMotionAndRotation();
+}
+
+function emulateKeyUp(keyCode) {
+    keysState[keyCode] = false;
+    updateMotionAndRotation();
+}
+
+function emulateKeyUpAll() {
+    keysState[87] = false;
+    keysState[65] = false;
+    keysState[83] = false;
+    keysState[68] = false;
+    updateMotionAndRotation();
+}
+
+window.addEventListener('touchcancel', function () {
+    emulateKeyUpAll();
+});
+
+window.addEventListener('touchend', function () {
+    emulateKeyUpAll();
+});
+
 // Aktualisieren Sie die Bewegung und Rotation basierend auf dem aktuellen Tastenzustand
 function updateMotionAndRotation() {
     // Standardwerte
@@ -278,3 +304,14 @@ setInterval(() => {
 }, 1000);
 
 requestAnimationFrame(animate);
+
+/* Opacity 0 / 1 for Main when pressed */
+function disableMain() {
+    document.getElementById('main_overlay').style.opacity = 0;
+}
+window.addEventListener('keyup', function (event) {
+    if (event.keyCode === 27) {
+        event.preventDefault();
+        document.getElementById('main_overlay').style.opacity = 1;
+    }
+});

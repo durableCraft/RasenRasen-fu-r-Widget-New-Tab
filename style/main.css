@@ -22,6 +22,29 @@
 
     image-rendering: pixelated;
     image-rendering: -webkit-optimize-contrast;
+
+    color: rgb(225, 225, 225);
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.9);
+}
+
+*::-webkit-scrollbar {
+    height: 5px;
+}
+
+/* Track */
+*::-webkit-scrollbar-track {
+    background: #f1f1f100;
+}
+
+/* Handle */
+*::-webkit-scrollbar-thumb {
+    background: #444444ab;
+    border-radius: 2.5px 2.5px;
+}
+
+/* Handle on hover */
+*::-webkit-scrollbar-thumb:hover {
+    background: #555;
 }
 
 body {
@@ -42,18 +65,128 @@ main {
     padding: 40px;
 
     background: rgba(0, 0, 0, 0.3);
-    color: rgb(225, 225, 225);
+
+    transition-duration: 500ms;
 }
 
 #main_h1 {
     max-width: 500px;
     min-width: 200px;
-
-    text-shadow: 0 0 10px rgba(0, 0, 0, 0.9);
 }
 
-h3 {
-    text-shadow: 0 0 10px rgba(0, 0, 0, 0.9);
+footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+
+    height: 100px;
+    width: 100vw;
+
+    background-color: rgba(0, 0, 0, 0.3);
+
+    overflow-x: scroll;
+}
+
+#footer_overflow {
+    max-height: 100px;
+    min-width: 1160px;
+
+    width: 100vw;
+
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-content: center;
+}
+
+.footer_part {
+    height: 100px;
+    width: 50vw;
+
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-content: center;
+}
+
+#footer_left {
+    justify-content: left;
+    min-width: 920px;
+}
+
+#footer_right {
+    justify-content: right;
+    width: fit-content;
+    justify-content: center;
+}
+
+.wasd_btn_description {
+    font-size: 20px;
+
+    padding: 10px;
+
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: center;
+}
+
+.wasd_div {
+    height: 80px;
+    min-width: 205px;
+    padding: 15px;
+    padding-right: 0;
+    width: fit-content;
+    margin: 10px;
+    margin-right: 0;
+
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-content: center;
+}
+
+.wasd_div:active::after {
+    height: 44px;
+    transform: translateY(4px);
+    border: 4px outset rgb(106, 106, 106);
+    border-left: none;
+    border-right: none;
+    border-top: none;
+}
+
+.wasd_btn {
+    height: 50px;
+    width: 80px;
+
+    font-size: 28px;
+
+    border: 10px outset rgb(130, 130, 130);
+    border-left: none;
+    border-right: none;
+    border-top: none;
+
+    background: rgb(118, 118, 118);
+    background-image: url('../images/btn_bg.png');
+    background-size: cover;
+    image-rendering: pixelated;
+
+    text-shadow: none;
+
+    transition-duration: 100ms;
+}
+
+.wasd_btn:active {
+    height: 44px;
+    transform: translateY(4px);
+    border: 4px outset rgb(106, 106, 106);
+    border-left: none;
+    border-right: none;
+    border-top: none;
+}
+
+#fullscreen_btn {
+    margin: 15px;
 }
 
 #gameCanvas {
