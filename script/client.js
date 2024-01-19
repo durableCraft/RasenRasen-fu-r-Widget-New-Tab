@@ -1,3 +1,5 @@
+"use strict";
+
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 ctx.imageSmoothingEnabled = false;
@@ -160,10 +162,6 @@ function animate() {
     ctx.rotate(-mowerRotation * Math.PI / 180);
     ctx.translate(-(startmowerPositionX + mowerSize / 2), -(startmowerPositionY + mowerSize / 2));
 
-    /* serverInfo.forEach(element => {
-        ctx.drawImage(mowerImg, element[0], element[1], mowerSize, mowerSize);
-    }); */
-
     for (const key in serverInfo) {
         if (Object.hasOwnProperty.call(serverInfo, key)) {
             if (clientID !== key) {
@@ -189,8 +187,7 @@ function animate() {
         }
     }
 
-    canvas.style.left = ((window.innerWidth / 2) - startmowerPositionX - 50 - mowerSize / 2) + 'px';
-    canvas.style.top = ((window.innerHeight / 2) - startmowerPositionY - 50 - mowerSize / 2) + 'px';
+    canvas.style.transform = 'translate('+ ((window.innerWidth / 2) - startmowerPositionX - 50 - mowerSize / 2) + 'px, '+ ((window.innerHeight / 2) - startmowerPositionY - 50 - mowerSize / 2) +'px)';
 
     requestAnimationFrame(animate);
 }
@@ -207,11 +204,5 @@ setInterval(() => {
     displayRenderFPS = renderFPS;
     renderFPS = 0;
 }, 1000);
-
-/* Generiere Neue Rasenpartikel */
-/* setInterval(() => {
-    if (motionX === 0 && motionY === 0) return;
-    if (rasenPositionen.length < 520) initialRasenFlaeche(1);
-}, 300); */
 
 requestAnimationFrame(animate);

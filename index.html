@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 
 <head>
     <meta charset="UTF-8">
@@ -49,13 +49,15 @@
 </head>
 
 <body>
-    <canvas id="gameCanvas" width="1920" height="1080"></canvas>
+    <canvas id="gameCanvas" width="1920" height="1080" style="transform: translate(0px, 0px);"></canvas>
 
     <p id="dev_anzeige" style="display: none;"></p>
 
     <script src="script/socket.io.js"></script>
     <script src="script/client.js"></script>
     <script>
+        "use strict";
+
         window.addEventListener('keyup', function toggleDevTools(event) {
             if (event.keyCode === 114) {
                 event.preventDefault();
