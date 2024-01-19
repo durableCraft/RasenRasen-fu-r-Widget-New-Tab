@@ -48,6 +48,11 @@ app.get('/script/client.js', (req, res) => {
     res.sendFile(indexPath);
 });
 
+app.get('/style/main.css', (req, res) => {
+    const indexPath = path.join(currentWorkingDirectory, '..', 'style', 'main.css');
+    res.sendFile(indexPath);
+});
+
 const rasenPartikelAnzahl = 300;
 let rasenPositionen = {};
 
