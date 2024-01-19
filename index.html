@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RasenRasen Test für lucapleger.com</title>
+    <title>Willkommen bei Luca Pleger!</title>
     <style>
         * {
             margin: 0;
@@ -24,7 +24,7 @@
             width: 100vw;
         }
 
-        canvas {
+        #gameCanvas {
             position: absolute;
 
             top: 0;
@@ -45,24 +45,29 @@
             left: 0;
             margin: 20px;
         }
-
-        #dummy_test {
-            height: 45px;
-            width: 30px;
-
-            background: rgb(191, 20, 20);
-            position: absolute;
-        }
     </style>
 </head>
 
 <body>
     <canvas id="gameCanvas" width="1920" height="1080"></canvas>
 
-    <p id="dev_anzeige"></p>
+    <p id="dev_anzeige" style="display: none;"></p>
 
     <script src="script/socket.io.js"></script>
     <script src="script/client.js"></script>
+    <script>
+        window.addEventListener('keyup', function toggleDevTools(event) {
+            if (event.keyCode === 114) {
+                event.preventDefault();
+                
+                if (document.getElementById('dev_anzeige').style.display === 'none') {
+                    document.getElementById('dev_anzeige').style.display = 'block';
+                } else {
+                    document.getElementById('dev_anzeige').style.display = 'none';
+                }
+            }
+        });
+    </script>
 </body>
 
 </html>

@@ -20,7 +20,6 @@ let targetRotation = 0;
 const rasenPartikelAnzahl = 300;
 let rasenPositionen = {};
 let keysState = {};
-let score = 0;
 let mowerColor = 0;
 let clientInfo = [startmowerPositionX, startmowerPositionY, mowerColor];
 let serverInfo = {};
@@ -96,8 +95,8 @@ function updateMotionAndRotation() {
 
 /* Developer Anzeige */
 setInterval(() => {
-    document.getElementById('dev_anzeige').textContent = 'Motion-X: ' + motionX + ' Motion-Y: ' + motionY + ' Rotation: ' + mowerRotation + ' Engine-FPS: ' + fps + ' FPS: ' + displayRenderFPS + ' Score: ' + score + ' Gesamtzahl-Rasenpartikel: ' + rasenPositionen.length;
-}, 100);
+    document.getElementById('dev_anzeige').textContent = 'Motion-X: ' + motionX + ' Motion-Y: ' + motionY + ' Rotation: ' + mowerRotation + ' Engine-FPS: ' + fps + ' FPS: ' + displayRenderFPS;
+}, 800);
 
 canvas.style.top = (window.innerHeight / 2) - (canvas.height / 2);
 canvas.style.left = (window.innerWidth / 2) - (canvas.width / 2);
