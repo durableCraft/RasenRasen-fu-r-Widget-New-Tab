@@ -2,6 +2,7 @@ const express = require('express');
 const http = require('http');
 const socketIO = require('socket.io');
 const path = require('path');
+const fs = require('fs');
 const rateLimit = require('express-rate-limit');
 
 const app = express();
@@ -17,9 +18,24 @@ const apiLimiter = rateLimit({
 
 app.use('/api/', apiLimiter);
 
+const currentWorkingDirectory = process.cwd();
+
+// Definiere den Pfad zum Ordner mit statischen Dateien (z. B. Bilder)
+const staticFolderPath = path.join(currentWorkingDirectory, 'static');
+
+// Statische Dateien bedienen
+app.use('/static', express.static(staticFolderPath));
+
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '../index.html'));
+    // Lies den Inhalt der HTML-Datei und sende sie als Antwort
+    const indexPath = path.join(currentWorkingDirectory, '..', 'index.html');
+    res.sendFile(indexPath);
 });
+
+app.get('/images/mower.png', (req, res) => {
+    const indexPath = path.join(currentWorkingDirectory, '..', 'images', 'mower.png');
+    res.sendFile(indexPath);
+})
 
 /* const rasenPartikelAnzahl = 300;
 let rasenPositionen = [{}];
@@ -43,7 +59,7 @@ let serverInfo = [{}];
 const fps = 60;
 
 function gamlogic() {
-    
+
 }
 
 io.on('connection', (socket) => {
