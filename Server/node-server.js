@@ -2,20 +2,20 @@ const express = require('express');
 const http = require('http');
 const socketIO = require('socket.io');
 const path = require('path');
-/* const rateLimit = require('express-rate-limit'); */
+const rateLimit = require('express-rate-limit');
 
 const app = express();
 const server = http.createServer(app);
 const io = socketIO(server);
 
-/* // Rate Limiting für API-Endpunkte (z.B. Socket.io)
+// Rate Limiting für API-Endpunkte (z.B. Socket.io)
 const apiLimiter = rateLimit({
     windowMs: 60 * 1000, // 1 Minute
     max: 3800, // Maximale Anzahl von Anfragen pro Minute
     message: 'Zu viele Anfragen von dieser IP, bitte versuche es später erneut.'
 });
 
-app.use('/api/', apiLimiter); */
+app.use('/api/', apiLimiter);
 
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '../index.html'));
