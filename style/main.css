@@ -8,6 +8,46 @@
     src: url('../assets/Silkscreen/Silkscreen-Bold.ttf');
 }
 
+@keyframes dash {
+    to {
+        stroke-dashoffset: 0;
+        fill: #f9f9f9;
+    }
+}
+
+@keyframes comdash {
+    to {
+        stroke-dashoffset: 0;
+        fill: #cccccc;
+    }
+}
+
+.defaultPath {
+    font-weight: bold;
+    font-family: 'Helvetica Neue';
+    fill: #f9f9f900;
+    stroke: #f9f9f9;
+    stroke-width: 1;
+    stroke-dasharray: 400;
+    stroke-dashoffset: 400;
+    animation: dash 2500ms ease-in forwards;
+
+    filter: drop-shadow(0 0 6px rgba(0, 0, 0, 0.6));
+}
+
+.comPath {
+    font-weight: bold;
+    font-family: 'Helvetica Neue';
+    fill: #cccccc00;
+    stroke: #cccccc;
+    stroke-width: 1;
+    stroke-dasharray: 400;
+    stroke-dashoffset: 400;
+    animation: comdash 2500ms ease-in forwards;
+
+    filter: drop-shadow(0 0 6px rgba(0, 0, 0, 0.6));
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -67,6 +107,11 @@ main {
     background: rgba(0, 0, 0, 0.3);
 
     transition-duration: 500ms;
+}
+
+#logoluca {
+    margin: 10px;
+    margin-left: 3px;
 }
 
 #main_h1 {
