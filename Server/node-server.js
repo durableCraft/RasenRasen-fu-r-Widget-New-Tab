@@ -169,6 +169,6 @@ io.on('connection', (socket) => {
     }, 500);
 });
 
-server.listen(80, () => {
-    console.log('Server läuft auf Port 80');
+server.listen(443, () => {
+    console.log('Server läuft auf Port 443');
 });

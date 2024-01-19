@@ -119,6 +119,19 @@ main {
     min-width: 200px;
 }
 
+#links {
+    margin-top: 5px;
+    font-size: 18px;
+}
+
+a {
+    transition-duration: 200ms;
+}
+
+a:hover {
+    opacity: 0.8;
+}
+
 footer {
     position: fixed;
     bottom: 0;
