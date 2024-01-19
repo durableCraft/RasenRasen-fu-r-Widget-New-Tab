@@ -70,7 +70,6 @@
         let fps = 60; /* Frames per Second */
         let renderFPS = 0;
         let displayRenderFPS = 0;
-        const socket = io();
 
         const mowerSize = 100;
         let motionX = 0;
@@ -86,7 +85,6 @@
         let score = 0;
         let mowerColor = 0;
         let clientInfo = [startmowerPositionX, startmowerPositionY, mowerColor];
-        let serverInfo = [{}];
 
         // Fügen Sie Eventlistener für keydown und keyup hinzu
         window.addEventListener('keydown', function (event) {
@@ -201,9 +199,7 @@
         }
 
         function socketemit() {
-            clientInfo = [startmowerPositionX, startmowerPositionY, mowerRotation, mowerColor];
-
-            socket.emit('clientInfo', clientInfo);
+            clientInfo = [startmowerPositionX, startmowerPositionY, mowerColor];
         }
 
         function animate() {
@@ -228,10 +224,6 @@
             ctx.rotate(-mowerRotation * Math.PI / 180);
             ctx.translate(-(startmowerPositionX + mowerSize / 2), -(startmowerPositionY + mowerSize / 2));
 
-            serverInfo.forEach(element => {
-                ctx.drawImage(mowerImg, element[0], element[1], mowerSize, mowerSize);
-            });
-
             canvas.style.left = ((window.innerWidth / 2) - startmowerPositionX - 50 - mowerSize / 2) + 'px';
             canvas.style.top = ((window.innerHeight / 2) - startmowerPositionY - 50 - mowerSize / 2) + 'px';
 
@@ -241,10 +233,6 @@
         setInterval(() => {
             gamelogic();
         }, 1000 / fps);
-
-        socket.on('serverInfo', (data) => {
-            serverInfo.push(data);
-        });
 
         setInterval(() => {
             socketemit();
