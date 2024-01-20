@@ -46,6 +46,7 @@ let targetRotation = 0;
 const rasenPartikelAnzahl = 300;
 let rasenPositionen = {};
 let keysState = {};
+const isFirefox = navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
 
 function getMowerColor() {
     const eastereggnum = Math.floor(Math.random() * 1000);
@@ -314,4 +315,13 @@ window.addEventListener('keyup', function (event) {
         event.preventDefault();
         document.getElementById('main_overlay').style.opacity = 1;
     }
+});
+
+/* Check for Firefox dreck */
+if (isFirefox) {
+    document.getElementById('warning').style.transform = 'translateX(0px)';
+}
+
+document.getElementById('warning').addEventListener('click', function () {
+    document.getElementById('warning').style.transform = 'translateX(1060px)';
 });

@@ -72,6 +72,11 @@ app.get('/images/btn_bg.png', (req, res) => {
     res.sendFile(indexPath);
 });
 
+app.get('/images/lucalogo.svg', (req, res) => {
+    const indexPath = path.join(currentWorkingDirectory, '..', 'images', 'lucalogo.svg');
+    res.sendFile(indexPath);
+});
+
 app.get('/script/socket.io.js', (req, res) => {
     const indexPath = path.join(currentWorkingDirectory, '..', 'script', 'socket.io.js');
     res.sendFile(indexPath);
