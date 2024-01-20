@@ -71,8 +71,7 @@ socket.on('clientID', (data) => {
 
 socket.on('serverInfo', (data) => {
     serverInfo = data;
-    console.log(clientID);
-    score = serverInfo[clientID][4];
+    if (serverInfo[clientID] !== undefined) score = serverInfo[clientID][4];
 });
 
 socket.on('rasenPartikel', (data) => {
