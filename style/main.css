@@ -65,6 +65,8 @@
 
     scrollbar-width: 5px;
     scrollbar-color: transparent #444444ab;
+
+    touch-action: manipulation;
 }
 
 *::-webkit-scrollbar {
@@ -102,8 +104,8 @@ main {
 
     overflow: visible;
 
-    height: 100vh;
-    width: 100vw;
+    height: 100%;
+    width: 100%;
     padding: 40px;
 
     background: rgba(0, 0, 0, 0.3);

@@ -328,3 +328,20 @@ if (isFirefox) {
 document.getElementById('warning').addEventListener('click', function () {
     document.getElementById('warning').style.transform = 'translateX(1060px)';
 });
+
+function mobileResizeFeature() {
+    if (window.innerWidth > 420 && window.innerHeight < 420) {
+        document.getElementById("disableonmobile").style.display = 'none';
+    } else if (window.innerWidth < 420 && window.innerHeight > 420) {
+        document.getElementById("disableonmobile").style.display = 'none';
+        setTimeout(() => {
+            alert('Bitte drehen Sie Ihr Gerät ins Querformat!');
+        }, 250);
+    } else {
+        document.getElementById("disableonmobile").style.display = 'block';
+    }
+}
+
+window.addEventListener('load', mobileResizeFeature);
+
+window.addEventListener('resize', mobileResizeFeature);
