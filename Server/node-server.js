@@ -2,13 +2,22 @@
 
 const express = require('express');
 const http = require('http');
+const https = require('https');
+const hostname = 'lucapleger.com';
 const socketIO = require('socket.io');
 const path = require('path');
+const fs = require("fs");
 const rateLimit = require('express-rate-limit');
 
 const app = express();
 const server = http.createServer(app);
-const io = socketIO(server);
+const options = {
+    key: fs.readFileSync("../../ssl/server.key"),
+    cert: fs.readFileSync("../../ssl/lucapleger_com.crt"),
+    ca: fs.readFileSync('../../ssl/lucapleger_com.p7b')
+};
+const serverHTTPS = https.createServer(options, app);
+const io = socketIO(serverHTTPS, server);
 
 // Rate Limiting für API-Endpunkte (z.B. Socket.io)
 const apiLimiter = rateLimit({
@@ -123,7 +132,7 @@ initialRasenFlaeche(rasenPartikelAnzahl);
 let serverInfo = {};
 const fps = 30;
 
-function gamelogic(x, y , radius, socketIdent) {
+function gamelogic(x, y, radius, socketIdent) {
     for (const key in rasenPositionen) {
         const [objX, objY] = rasenPositionen[key];
         const abstand = Math.sqrt(Math.pow(objX - x, 2) + Math.pow(objY - y, 2));
@@ -177,4 +186,8 @@ io.on('connection', (socket) => {
 
 server.listen(80, () => {
     console.log('Server läuft auf Port 80');
+});
+
+serverHTTPS.listen(443, () => {
+    console.log('Server läuft auf Port 443');
 });
