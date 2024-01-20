@@ -47,6 +47,7 @@ const rasenPartikelAnzahl = 300;
 let rasenPositionen = {};
 let keysState = {};
 const isFirefox = navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
+let score = 0;
 
 function getMowerColor() {
     const eastereggnum = Math.floor(Math.random() * 1000);
@@ -60,7 +61,7 @@ function getMowerColor() {
 }
 
 let mowerColor = getMowerColor();
-let clientInfo = [startmowerPositionX, startmowerPositionY, mowerColor];
+let clientInfo = [startmowerPositionX, startmowerPositionY, mowerColor, mowerRotation, score];
 let serverInfo = {};
 mowerImg.src = mowerURL[mowerColor];
 
@@ -70,6 +71,8 @@ socket.on('clientID', (data) => {
 
 socket.on('serverInfo', (data) => {
     serverInfo = data;
+    console.log(clientID);
+    score = serverInfo[clientID][4];
 });
 
 socket.on('rasenPartikel', (data) => {
@@ -162,6 +165,7 @@ function updateMotionAndRotation() {
 /* Developer Anzeige */
 setInterval(() => {
     document.getElementById('dev_anzeige').textContent = 'Motion-X: ' + motionX + ' Motion-Y: ' + motionY + ' Rotation: ' + mowerRotation + ' Engine-FPS: ' + fps + ' FPS: ' + displayRenderFPS;
+    document.getElementById('score').textContent = 'Score: ' + score;
 }, 800);
 
 canvas.style.top = (window.innerHeight / 2) - (canvas.height / 2);
@@ -197,7 +201,7 @@ function gamelogic() {
 }
 
 function socketemit() {
-    clientInfo = [startmowerPositionX, startmowerPositionY, mowerRotation, mowerColor];
+    clientInfo = [startmowerPositionX, startmowerPositionY, mowerRotation, mowerColor, score];
     socket.emit('clientInfo', clientInfo);
 }
 

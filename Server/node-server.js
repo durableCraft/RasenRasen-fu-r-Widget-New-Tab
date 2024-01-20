@@ -123,20 +123,14 @@ initialRasenFlaeche(rasenPartikelAnzahl);
 let serverInfo = {};
 const fps = 30;
 
-function gamelogic(x, y , radius) {
-    /*     const tempArray = rasenPositionen.filter(element =>
-            !(element[0] >= startmowerPositionX + 10 && element[0] <= startmowerPositionX + mowerSize - 10 &&
-                element[1] >= startmowerPositionY + 10 && element[1] <= startmowerPositionY + mowerSize - 10)
-        );
-        score += rasenPositionen.length - tempArray.length;
-        rasenPositionen = tempArray; */
-
+function gamelogic(x, y , radius, socketIdent) {
     for (const key in rasenPositionen) {
         const [objX, objY] = rasenPositionen[key];
         const abstand = Math.sqrt(Math.pow(objX - x, 2) + Math.pow(objY - y, 2));
 
         if (abstand <= radius) {
             delete rasenPositionen[key];
+            serverInfo[socketIdent][4] += 1;
         }
     }
 }
@@ -150,9 +144,9 @@ io.on('connection', (socket) => {
 
     // Beispiel: Empfange eine Variable vom Client
     socket.on('clientInfo', (data) => {
-        serverInfo[socket.id] = [data[0], data[1], data[2], data[3]];
+        serverInfo[socket.id] = [data[0], data[1], data[2], data[3], data[4]];
 
-        gamelogic(data[0] + 50, data[1] + 50, 40);
+        gamelogic(data[0] + 50, data[1] + 50, 40, socket.id);
     });
 
     // Beispiel: Sende eine Variable an den Client
