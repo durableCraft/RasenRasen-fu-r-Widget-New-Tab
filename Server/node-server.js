@@ -111,8 +111,8 @@ function getRandomInteger(min, max) {
 
 function initialRasenFlaeche(amount) {
     for (let index = 0; index < amount; index++) {
-        const RandPosX = getRandomInteger(1, 1920);
-        const RandPosY = getRandomInteger(1, 1080);
+        const RandPosX = getRandomInteger(22, 1898);
+        const RandPosY = getRandomInteger(22, 1058);
 
         rasenPositionen[RandPosX + RandPosY] = [RandPosX, RandPosY];
     }
@@ -140,6 +140,13 @@ io.on('connection', (socket) => {
 
     socket.on('disconnect', () => {
         delete serverInfo[socket.id];
+
+        if (Object.keys(serverInfo).length < 1) {
+            rasenPositionen = {};
+
+            /* Erstelle neue Rasenfläche wenn niemand mehr da. */
+            initialRasenFlaeche(rasenPartikelAnzahl);
+        }
     });
 
     // Beispiel: Empfange eine Variable vom Client
