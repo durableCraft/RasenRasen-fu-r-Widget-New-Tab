@@ -237,6 +237,7 @@ footer #footer_overflow {
     border-left: none;
     border-right: none;
     border-top: none;
+    outline: none;
 
     background: rgb(118, 118, 118);
     background-image: url('../images/btn_bg.png');
@@ -246,6 +247,8 @@ footer #footer_overflow {
     text-shadow: none;
 
     transition-duration: 100ms;
+
+    cursor: pointer;
 }
 
 .wasd_btn:active {
