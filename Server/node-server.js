@@ -1,7 +1,7 @@
 "use strict";
 
 const express = require('express');
-const https = require('http');
+const https = require('http'); /* use http for development only, otherwise http(s)! */
 const hostname = 'lucapleger.com';
 const socketIO = require('socket.io');
 const path = require('path');
@@ -40,6 +40,35 @@ app.get('/', (req, res) => {
     res.sendFile(indexPath);
 });
 
+/* Projects Directory send file + css + js */
+app.get('/projects', (req, res) => {
+    const indexPath = path.join(currentWorkingDirectory, '..', 'projects.html');
+    res.sendFile(indexPath);
+});
+app.get('/style/projects.css', (req, res) => {
+    const indexPath = path.join(currentWorkingDirectory, '..', 'style', 'projects.css');
+    res.sendFile(indexPath);
+});
+app.get('/script/projects.js', (req, res) => {
+    const indexPath = path.join(currentWorkingDirectory, '..', 'script', 'projects.js');
+    res.sendFile(indexPath);
+});
+
+/* About Directory send file + css + js */
+app.get('/about', (req, res) => {
+    const indexPath = path.join(currentWorkingDirectory, '..', 'about.html');
+    res.sendFile(indexPath);
+});
+app.get('/style/about.css', (req, res) => {
+    const indexPath = path.join(currentWorkingDirectory, '..', 'style', 'about.css');
+    res.sendFile(indexPath);
+});
+app.get('/script/about.js', (req, res) => {
+    const indexPath = path.join(currentWorkingDirectory, '..', 'script', 'about.js');
+    res.sendFile(indexPath);
+});
+
+/* Index Direktory send files */
 app.get('/images/mower.png', (req, res) => {
     const indexPath = path.join(currentWorkingDirectory, '..', 'images', 'mower.png');
     res.sendFile(indexPath);
