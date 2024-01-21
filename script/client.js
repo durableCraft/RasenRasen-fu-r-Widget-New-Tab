@@ -49,6 +49,13 @@ let keysState = {};
 const isFirefox = navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
 let score = 0;
 
+function isTouchScreen() {
+    return 'ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0;
+}
+
+// Beispielaufruf der Funktion
+const isTouch = isTouchScreen();
+
 function getMowerColor() {
     const eastereggnum = Math.floor(Math.random() * 1000);
     const num = Math.floor(Math.random() * 6);
@@ -163,7 +170,7 @@ function updateMotionAndRotation() {
 
 /* Developer Anzeige */
 setInterval(() => {
-    document.getElementById('dev_anzeige').textContent = 'Motion-X: ' + motionX + ' Motion-Y: ' + motionY + ' Rotation: ' + mowerRotation + ' Engine-FPS: ' + fps + ' FPS: ' + displayRenderFPS;
+    document.getElementById('dev_anzeige').textContent = 'RasenRasen Client-ID: ' + clientID + ' Motion-X: ' + motionX + ' Motion-Y: ' + motionY + ' Rotation: ' + mowerRotation + ' Engine-FPS: ' + fps + ' FPS: ' + displayRenderFPS;
     document.getElementById('score').textContent = 'Score: ' + score;
 }, 800);
 
@@ -309,9 +316,15 @@ setInterval(() => {
 
 requestAnimationFrame(animate);
 
-/* Opacity 0 / 1 for Main when pressed */
+/* Opacity 0 / 1 for Main when pressed Fullscreen button */
 function disableMain() {
-    document.getElementById('main_overlay').style.opacity = 0;
+    if (document.getElementById('main_overlay').style.opacity === "0") {
+        document.getElementById('main_overlay').style.opacity = 1;
+        document.getElementById('fullscreen_btn').textContent = '+';
+    } else {
+        document.getElementById('main_overlay').style.opacity = 0;
+        document.getElementById('fullscreen_btn').textContent = '-';
+    }
 }
 window.addEventListener('keyup', function (event) {
     if (event.keyCode === 27) {
@@ -329,14 +342,17 @@ document.getElementById('warning').addEventListener('click', function () {
     document.getElementById('warning').style.transform = 'translateX(1060px)';
 });
 
+/* Mobile Resize Logic */
 function mobileResizeFeature() {
     if (window.innerWidth > 420 && window.innerHeight < 420) {
         document.getElementById("disableonmobile").style.display = 'none';
-    } else if (window.innerWidth < 420 && window.innerHeight > 420) {
+    } else if (window.innerWidth < 435 && window.innerHeight > 435) {
         document.getElementById("disableonmobile").style.display = 'none';
-        setTimeout(() => {
-            alert('Bitte drehen Sie Ihr Gerät ins Querformat!');
-        }, 250);
+        if (isTouch) {
+            setTimeout(() => {
+                alert('Bitte drehen Sie Ihr Gerät ins Querformat!');
+            }, 250);
+        }
     } else {
         document.getElementById("disableonmobile").style.display = 'block';
     }
