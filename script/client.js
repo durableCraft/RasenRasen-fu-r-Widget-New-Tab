@@ -38,7 +38,7 @@ let clientID = "undefined";
 const mowerSize = 100;
 let motionX = 0;
 let motionY = 0;
-let mowerSpeed = 5;
+const mowerSpeed = 4;
 let startmowerPositionX = (canvas.width / 2) - (mowerSize / 2);
 let startmowerPositionY = (canvas.height / 2) - (mowerSize / 2);
 let mowerRotation = 0;
@@ -127,13 +127,12 @@ function updateMotionAndRotation() {
     // Standardwerte
     motionX = 0;
     motionY = 0;
-    mowerSpeed = 5;
     targetRotation = mowerRotation;
 
     // Überprüfen der Tasten und Anpassung der Bewegung und Rotation
     if (keysState[87]) { // W
         motionY = -mowerSpeed;
-        targetRotation = -90;
+        targetRotation = 270;
     }
     if (keysState[65]) { // A
         motionX = -mowerSpeed;
@@ -149,22 +148,26 @@ function updateMotionAndRotation() {
     }
 
     // Diagonale Kombinationen aus Tasten
-    if (keysState[87] && keysState[68]) {
-        motionX = motionX / 2;
-        motionY = motionY / 2;
-        targetRotation = -45;
+    if (keysState[87] && keysState[68] && keysState[65] && keysState[83]) {
+        motionX = motionX * 0;
+        motionY = motionY * 0;
+        targetRotation = mowerRotation;
+    } else if (keysState[87] && keysState[68]) {
+        motionX = motionX * 0.7072;
+        motionY = motionY * 0.7072;
+        targetRotation = 315;
     } else if (keysState[68] && keysState[83]) {
-        motionX = motionX / 2;
-        motionY = motionY / 2;
+        motionX = motionX * 0.7072;
+        motionY = motionY * 0.7072;
         targetRotation = 45;
     } else if (keysState[83] && keysState[65]) {
-        motionX = motionX / 2;
-        motionY = motionY / 2;
+        motionX = motionX * 0.7072;
+        motionY = motionY * 0.7072;
         targetRotation = 135;
     } else if (keysState[87] && keysState[65]) {
-        motionX = motionX / 2;
-        motionY = motionY / 2;
-        targetRotation = -135;
+        motionX = motionX * 0.7072;
+        motionY = motionY * 0.7072;
+        targetRotation = 225;
     }
 }
 
@@ -187,11 +190,11 @@ function gamelogic() {
 
     // Kürzesten Drehwinkel zwischen aktueller Rotation und Zielrotation berechnen
     let angleDiff = targetRotation - mowerRotation;
-    angleDiff = ((angleDiff + 180) % 360) - 180;
+    angleDiff = ((angleDiff + 180) % 360 + 360) % 360 - 180;
 
     // Drehung anpassen (maximal 10 Grad pro Schritt)
     let rotationStep = Math.sign(angleDiff) * Math.min(10, Math.abs(angleDiff));
-    mowerRotation += rotationStep;
+    mowerRotation = (mowerRotation + rotationStep + 360) % 360;
 
     if (startmowerPositionX < 0) {
         startmowerPositionX = 0;
