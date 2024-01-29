@@ -163,6 +163,7 @@ initialRasenFlaeche(rasenPartikelAnzahl);
 
 let serverInfo = {};
 const fps = 30;
+let tempDelRasen = [];
 
 function gamelogic(x, y, radius, socketIdent) {
     for (const key in rasenPositionen) {
@@ -172,7 +173,7 @@ function gamelogic(x, y, radius, socketIdent) {
         if (abstand <= radius) {
             delete rasenPositionen[key];
             serverInfo[socketIdent][4] += 1; /* Score +1 */
-            return key;
+            tempDelRasen.push(key);
         }
     }
 }
@@ -199,8 +200,7 @@ io.on('connection', (socket) => {
     socket.on('clientInfo', (data) => {
         serverInfo[socket.id] = [data[0], data[1], data[2], data[3], data[4]];
 
-        const key = gamelogic(data[0] + 50, data[1] + 50, 40, socket.id);
-        socket.emit('RemoveRasenPartikel', key);
+        gamelogic(data[0] + 50, data[1] + 50, 40, socket.id);
     });
 
     // Beispiel: Sende eine Variable an den Client
@@ -226,17 +226,23 @@ io.on('connection', (socket) => {
         }
     }
 
+    /* Rasenpartikel hinzufügen oder entfernen */
     setInterval(() => {
         if (Object.keys(rasenPositionen).length < (rasenPartikelAnzahl - 50)) {
             const menge = (rasenPartikelAnzahl - 50) - Object.keys(rasenPositionen).length;
             AddRasenFlaeche(menge);
 
             if (tempAddRasen != {}) {
-                socket.emit('AddRasenPartikel', tempAddRasen);
+                io.emit('AddRasenPartikel', tempAddRasen);
                 tempAddRasen = {};
             }
         }
     }, 500);
+
+    setInterval(() => {
+        io.emit('RemoveRasenPartikel', tempDelRasen);
+        tempDelRasen = [];
+    }, 250);
 
     /* Joining Message: */
     function consoleJoinLog() {

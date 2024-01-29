@@ -86,7 +86,10 @@ socket.on('rasenPartikel', (data) => {
 });
 
 socket.on('RemoveRasenPartikel', (data) => {
-    delete rasenPositionen[data];
+    data.forEach(element => {
+        console.log(rasenPositionen[element]);
+        delete rasenPositionen[element];
+    });
 });
 
 socket.on('AddRasenPartikel', (data) => {
