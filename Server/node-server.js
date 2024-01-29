@@ -138,6 +138,11 @@ app.get('/assets/Silkscreen/Silkscreen-Bold.ttf', (req, res) => {
     res.sendFile(indexPath);
 });
 
+/* 404 Seite bei ungültigem Pfad. */
+app.use((req, res, next) => {
+    res.status(404).sendFile(path.join(currentWorkingDirectory, '..', '404.html'));
+});
+
 const rasenPartikelAnzahl = 300;
 let rasenPositionen = {};
 
