@@ -221,7 +221,7 @@ function animate() {
     for (const key in rasenPositionen) {
         if (Object.hasOwnProperty.call(rasenPositionen, key)) {
             const element = rasenPositionen[key];
-            ctx.fillStyle = "rgb(78, 105, 24)";
+            ctx.fillStyle = "rgb(88, 114, 36)";
             ctx.fillRect(element[0], element[1], 10, 10); // x, y, width, height
         }
     }
@@ -332,7 +332,7 @@ function disableMain() {
 window.addEventListener('keyup', function (event) {
     if (event.keyCode === 27) {
         event.preventDefault();
-        document.getElementById('main_overlay').style.opacity = 1;
+        disableMain();
     }
 });
 

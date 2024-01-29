@@ -1,7 +1,7 @@
 "use strict";
 
 const express = require('express');
-const https = require('https'); /* use http for development only, otherwise http(s)! */
+const https = require('http'); /* use http for development only, otherwise http(s)! */
 const hostname = 'lucapleger.com';
 const socketIO = require('socket.io');
 const path = require('path');

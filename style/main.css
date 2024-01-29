@@ -91,7 +91,7 @@
 
 body {
     position: fixed;
-    background: rgb(146, 186, 66);
+    background: rgb(142, 189, 49);
 
     height: 100vh;
     width: 100vw;
@@ -277,7 +277,8 @@ footer #footer_overflow {
 
     border: 100px solid outset;
     border-image: url('../images/fence.png') 100 / 100px / 75px round;
-    background: rgb(146, 186, 66);
+    /* background: rgb(146, 186, 66); */ /* original Color */
+    background: rgb(142, 189, 49);
     image-rendering: pixelated;
     image-rendering: -webkit-optimize-contrast;
 }

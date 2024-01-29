@@ -121,6 +121,7 @@
 
         window.addEventListener('keyup', function toggleDevTools(event) {
             if (event.keyCode === 114) {
+                event.stopImmediatePropagation();;
                 event.preventDefault();
 
                 if (document.getElementById('dev_anzeige').style.display === 'none') {
