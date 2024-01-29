@@ -85,6 +85,16 @@ socket.on('rasenPartikel', (data) => {
     rasenPositionen = data;
 });
 
+socket.on('RemoveRasenPartikel', (data) => {
+    delete rasenPositionen[data];
+});
+
+socket.on('AddRasenPartikel', (data) => {
+    console.log(data);
+
+    Object.assign(rasenPositionen, data);
+});
+
 // Fügen Sie Eventlistener für keydown und keyup hinzu
 window.addEventListener('keydown', function (event) {
     keysState[event.keyCode] = true;

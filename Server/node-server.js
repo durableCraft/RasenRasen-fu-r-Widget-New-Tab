@@ -1,7 +1,7 @@
 "use strict";
 
 const express = require('express');
-const https = require('http'); /* use http for development only, otherwise http(s)! */
+const https = require('https'); /* use http for development only, otherwise http(s)! */
 const hostname = 'lucapleger.com';
 const socketIO = require('socket.io');
 const path = require('path');
@@ -171,7 +171,8 @@ function gamelogic(x, y, radius, socketIdent) {
 
         if (abstand <= radius) {
             delete rasenPositionen[key];
-            serverInfo[socketIdent][4] += 1;
+            serverInfo[socketIdent][4] += 1; /* Score +1 */
+            return key;
         }
     }
 }
@@ -181,6 +182,10 @@ io.on('connection', (socket) => {
 
     socket.on('disconnect', () => {
         delete serverInfo[socket.id];
+
+        const currentDate = new Date();
+        const formatedDate = currentDate.getDate() + '.' + (currentDate.getMonth() + 1) + '.' + currentDate.getFullYear() + ' ' + currentDate.getHours() + ':' + currentDate.getMinutes() + ':' + currentDate.getSeconds() + ' - ';
+        console.log(formatedDate + socket.id + ' has left!');
 
         if (Object.keys(serverInfo).length < 1) {
             rasenPositionen = {};
@@ -194,7 +199,8 @@ io.on('connection', (socket) => {
     socket.on('clientInfo', (data) => {
         serverInfo[socket.id] = [data[0], data[1], data[2], data[3], data[4]];
 
-        gamelogic(data[0] + 50, data[1] + 50, 40, socket.id);
+        const key = gamelogic(data[0] + 50, data[1] + 50, 40, socket.id);
+        socket.emit('RemoveRasenPartikel', key);
     });
 
     // Beispiel: Sende eine Variable an den Client
@@ -206,14 +212,39 @@ io.on('connection', (socket) => {
     socket.emit('rasenPartikel', rasenPositionen);
     setInterval(() => {
         socket.emit('rasenPartikel', rasenPositionen);
-    }, 250);
+    }, 15000); /* Alle 15 Sekunden wird das Absolute Objekt übertragen um Fehler zu beheben. */
+
+    let tempAddRasen = {};
+
+    function AddRasenFlaeche(amount) {
+        for (let index = 0; index < amount; index++) {
+            const RandPosX = getRandomInteger(22, 1898);
+            const RandPosY = getRandomInteger(22, 1058);
+
+            rasenPositionen[RandPosX + RandPosY] = [RandPosX, RandPosY];
+            tempAddRasen[RandPosX + RandPosY] = [RandPosX, RandPosY];
+        }
+    }
 
     setInterval(() => {
         if (Object.keys(rasenPositionen).length < (rasenPartikelAnzahl - 50)) {
             const menge = (rasenPartikelAnzahl - 50) - Object.keys(rasenPositionen).length;
-            initialRasenFlaeche(menge);
+            AddRasenFlaeche(menge);
+
+            if (tempAddRasen != {}) {
+                socket.emit('AddRasenPartikel', tempAddRasen);
+                tempAddRasen = {};
+            }
         }
     }, 500);
+
+    /* Joining Message: */
+    function consoleJoinLog() {
+        const currentDate = new Date();
+        const formatedDate = currentDate.getDate() + '.' + (currentDate.getMonth() + 1) + '.' + currentDate.getFullYear() + ' ' + currentDate.getHours() + ':' + currentDate.getMinutes() + ':' + currentDate.getSeconds() + ' - ';
+        console.log(formatedDate + socket.id + ' has joined!');
+    }
+    consoleJoinLog();
 });
 
 serverHTTPS.listen(443, () => {
