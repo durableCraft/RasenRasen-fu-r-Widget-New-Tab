@@ -13,9 +13,6 @@ const mowerURL = [
     'images/mower_6.png',
     'images/mower_0.png'
 ];
-
-const flowerImg = new Image;
-flowerImg.src = 'images/flower.png';
 const mower0 = new Image;
 mower0.src = mowerURL[6];
 const mower1 = new Image;
@@ -30,6 +27,14 @@ const mower5 = new Image;
 mower5.src = mowerURL[4];
 const mower6 = new Image;
 mower6.src = mowerURL[5];
+
+const flowerImg = new Image;
+flowerImg.src = 'images/flower.png';
+
+const rockImg = new Image;
+rockImg.src = 'images/rock.png';
+const pegImg = new Image;
+pegImg.src = 'images/peg.png';
 
 let fps = 60; /* Frames per Second */
 let renderFPS = 0;
@@ -48,9 +53,11 @@ let targetRotation = 0;
 const rasenPartikelAnzahl = 300;
 let rasenPositionen = {};
 let flowerPositionen = {};
+let obstaclePositionen = {};
 let keysState = {};
 const isFirefox = navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
 let score = 0;
+let cooldown = 0;
 
 function isTouchScreen() {
     return 'ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0;
@@ -90,6 +97,10 @@ socket.on('rasenPartikel', (data) => {
 
 socket.on('flowers', (data) => {
     flowerPositionen = data;
+});
+
+socket.on('obstacles', (data) => {
+    obstaclePositionen = data;
 });
 
 socket.on('RemoveRasenPartikel', (data) => {
@@ -237,6 +248,17 @@ function gamelogic() {
 }
 
 function socketemit() {
+    if (cooldown <= 0) {
+        for (const key in obstaclePositionen) {
+            const [objX, objY] = obstaclePositionen[key];
+            const abstand = Math.sqrt(Math.pow(objX - (startmowerPositionX + 50), 2) + Math.pow(objY - (startmowerPositionY + 50), 2));
+
+            if (abstand <= 40) {
+                score = Math.max(score - 10, 0); /* Score -10 */
+                cooldown = 2;
+            }
+        }
+    }
     clientInfo = [startmowerPositionX, startmowerPositionY, mowerRotation, mowerColor, score];
     socket.emit('clientInfo', clientInfo);
 }
@@ -257,6 +279,26 @@ function animate() {
         if (Object.hasOwnProperty.call(flowerPositionen, key)) {
             const element = flowerPositionen[key];
             ctx.drawImage(flowerImg, element[0] - 15, element[1] - 15, 30, 30);
+        }
+    }
+
+    for (const key in obstaclePositionen) {
+        if (Object.hasOwnProperty.call(obstaclePositionen, key)) {
+            const element = obstaclePositionen[key];
+
+            switch (element[2]) {
+                case 0:
+                    ctx.drawImage(rockImg, element[0] - 25, element[1] - 25, 50, 50);
+                    break;
+
+                case 1:
+                    ctx.drawImage(pegImg, element[0] - 25, element[1] - 15, 50, 30);
+                    break;
+
+                default:
+                    ctx.drawImage(rockImg, element[0] - 25, element[1] - 25, 50, 50);
+                    break;
+            }
         }
     }
 
@@ -349,6 +391,10 @@ setInterval(() => {
 setInterval(() => {
     displayRenderFPS = renderFPS;
     renderFPS = 0;
+
+    if (cooldown > 0) {
+        cooldown = cooldown - 1;
+    }
 }, 1000);
 
 requestAnimationFrame(animate);

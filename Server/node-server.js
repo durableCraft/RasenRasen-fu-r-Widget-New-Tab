@@ -118,6 +118,16 @@ app.get('/images/flower.png', (req, res) => {
     res.sendFile(indexPath);
 });
 
+app.get('/images/peg.png', (req, res) => {
+    const indexPath = path.join(currentWorkingDirectory, '..', 'images', 'peg.png');
+    res.sendFile(indexPath);
+});
+
+app.get('/images/rock.png', (req, res) => {
+    const indexPath = path.join(currentWorkingDirectory, '..', 'images', 'rock.png');
+    res.sendFile(indexPath);
+});
+
 app.get('/script/socket.io.js', (req, res) => {
     const indexPath = path.join(currentWorkingDirectory, '..', 'script', 'socket.io.js');
     res.sendFile(indexPath);
@@ -150,8 +160,10 @@ app.use((req, res, next) => {
 
 const rasenPartikelAnzahl = 350;
 const flowerAnzahl = 15;
+const obstacleAnzahl = 4;
 let rasenPositionen = {};
 let flowerPositionen = {};
+let obstaclePositionen = {};
 
 function getRandomInteger(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -175,7 +187,18 @@ function initialFlowerFlache(amount) {
         flowerPositionen[RandPosX + RandPosY] = [RandPosX, RandPosY];
     }
 }
-initialFlowerFlache(flowerAnzahl);
+initialFlowerFlache(obstacleAnzahl);
+
+function initialObstacleFlache(amount) {
+    for (let index = 0; index < amount; index++) {
+        const RandPosX = getRandomInteger(22, 1898);
+        const RandPosY = getRandomInteger(22, 1058);
+        const type = getRandomInteger(0, 1);
+
+        obstaclePositionen[RandPosX + RandPosY] = [RandPosX, RandPosY, type];
+    }
+}
+initialObstacleFlache(obstacleAnzahl);
 
 let serverInfo = {};
 const fps = 30;
@@ -217,10 +240,13 @@ io.on('connection', (socket) => {
         console.log(formatedDate + socket.id + ' has left!');
 
         if (Object.keys(serverInfo).length < 1) {
-            rasenPositionen = {};
-
             /* Erstelle neue Rasenfläche wenn niemand mehr da. */
+            rasenPositionen = {};
             initialRasenFlaeche(rasenPartikelAnzahl);
+            flowerPositionen = {};
+            initialFlowerFlache(flowerAnzahl);
+            obstaclePositionen = {};
+            initialObstacleFlache(obstacleAnzahl);
         }
     });
 
@@ -236,9 +262,10 @@ io.on('connection', (socket) => {
         socket.emit('serverInfo', serverInfo);
     }, 1000 / fps);
 
-    /* Rasenpartikel senden */
+    /* Rasenpartikel etc senden */
     socket.emit('rasenPartikel', rasenPositionen);
     socket.emit('flowers', flowerPositionen);
+    socket.emit('obstacles', obstaclePositionen);
     setInterval(() => {
         socket.emit('rasenPartikel', rasenPositionen);
         socket.emit('flowers', flowerPositionen);
