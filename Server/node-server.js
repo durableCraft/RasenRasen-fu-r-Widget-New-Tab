@@ -1,7 +1,7 @@
 "use strict";
 
 const express = require('express');
-const https = require('https'); /* use http for development only, otherwise http(s)! */
+const https = require('http'); /* use http for development only, otherwise http(s)! */
 const hostname = 'lucapleger.com';
 const socketIO = require('socket.io');
 const path = require('path');
@@ -113,6 +113,11 @@ app.get('/images/lucalogo.svg', (req, res) => {
     res.sendFile(indexPath);
 });
 
+app.get('/images/flower.png', (req, res) => {
+    const indexPath = path.join(currentWorkingDirectory, '..', 'images', 'flower.png');
+    res.sendFile(indexPath);
+});
+
 app.get('/script/socket.io.js', (req, res) => {
     const indexPath = path.join(currentWorkingDirectory, '..', 'script', 'socket.io.js');
     res.sendFile(indexPath);
@@ -143,8 +148,10 @@ app.use((req, res, next) => {
     res.status(404).sendFile(path.join(currentWorkingDirectory, '..', '404.html'));
 });
 
-const rasenPartikelAnzahl = 300;
+const rasenPartikelAnzahl = 350;
+const flowerAnzahl = 15;
 let rasenPositionen = {};
+let flowerPositionen = {};
 
 function getRandomInteger(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -158,12 +165,22 @@ function initialRasenFlaeche(amount) {
         rasenPositionen[RandPosX + RandPosY] = [RandPosX, RandPosY];
     }
 }
-
 initialRasenFlaeche(rasenPartikelAnzahl);
+
+function initialFlowerFlache(amount) {
+    for (let index = 0; index < amount; index++) {
+        const RandPosX = getRandomInteger(22, 1898);
+        const RandPosY = getRandomInteger(22, 1058);
+
+        flowerPositionen[RandPosX + RandPosY] = [RandPosX, RandPosY];
+    }
+}
+initialFlowerFlache(flowerAnzahl);
 
 let serverInfo = {};
 const fps = 30;
 let tempDelRasen = [];
+let tempDelFlower = [];
 
 function gamelogic(x, y, radius, socketIdent) {
     for (const key in rasenPositionen) {
@@ -174,6 +191,17 @@ function gamelogic(x, y, radius, socketIdent) {
             delete rasenPositionen[key];
             serverInfo[socketIdent][4] += 1; /* Score +1 */
             tempDelRasen.push(key);
+        }
+    }
+
+    for (const key in flowerPositionen) {
+        const [objX, objY] = flowerPositionen[key];
+        const abstand = Math.sqrt(Math.pow(objX - x, 2) + Math.pow(objY - y, 2));
+
+        if (abstand <= radius) {
+            delete flowerPositionen[key];
+            serverInfo[socketIdent][4] += 2; /* Score +2 */
+            tempDelFlower.push(key);
         }
     }
 }
@@ -210,11 +238,14 @@ io.on('connection', (socket) => {
 
     /* Rasenpartikel senden */
     socket.emit('rasenPartikel', rasenPositionen);
+    socket.emit('flowers', flowerPositionen);
     setInterval(() => {
         socket.emit('rasenPartikel', rasenPositionen);
+        socket.emit('flowers', flowerPositionen);
     }, 15000); /* Alle 15 Sekunden wird das Absolute Objekt übertragen um Fehler zu beheben. */
 
     let tempAddRasen = {};
+    let tempAddFlower = {};
 
     function AddRasenFlaeche(amount) {
         for (let index = 0; index < amount; index++) {
@@ -226,7 +257,17 @@ io.on('connection', (socket) => {
         }
     }
 
-    /* Rasenpartikel hinzufügen oder entfernen */
+    function AddFlowerFlache(amount) {
+        for (let index = 0; index < amount; index++) {
+            const RandPosX = getRandomInteger(22, 1898);
+            const RandPosY = getRandomInteger(22, 1058);
+
+            flowerPositionen[RandPosX + RandPosY] = [RandPosX, RandPosY];
+            tempAddFlower[RandPosX + RandPosY] = [RandPosX, RandPosY];
+        }
+    }
+
+    /* Rasenpartikel / Flowers hinzufügen oder entfernen */
     setInterval(() => {
         if (Object.keys(rasenPositionen).length < (rasenPartikelAnzahl - 50)) {
             const menge = (rasenPartikelAnzahl - 50) - Object.keys(rasenPositionen).length;
@@ -240,8 +281,26 @@ io.on('connection', (socket) => {
     }, 500);
 
     setInterval(() => {
-        io.emit('RemoveRasenPartikel', tempDelRasen);
-        tempDelRasen = [];
+        if (Object.keys(flowerPositionen).length < flowerAnzahl) {
+            const menge = flowerAnzahl - Object.keys(flowerPositionen).length;
+            AddFlowerFlache(menge);
+
+            if (tempAddFlower != {}) {
+                io.emit('AddFlower', tempAddFlower);
+                tempAddFlower = {};
+            }
+        }
+    }, 2000);
+
+    setInterval(() => {
+        if (tempDelRasen != []) {
+            io.emit('RemoveRasenPartikel', tempDelRasen);
+            tempDelRasen = [];
+        }
+        if (tempDelFlower != []) {
+            io.emit('RemoveFlowers', tempDelFlower);
+            tempDelFlower = [];
+        }
     }, 250);
 
     /* Joining Message: */

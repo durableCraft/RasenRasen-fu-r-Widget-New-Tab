@@ -14,6 +14,8 @@ const mowerURL = [
     'images/mower_0.png'
 ];
 
+const flowerImg = new Image;
+flowerImg.src = 'images/flower.png';
 const mower0 = new Image;
 mower0.src = mowerURL[6];
 const mower1 = new Image;
@@ -45,6 +47,7 @@ let mowerRotation = 0;
 let targetRotation = 0;
 const rasenPartikelAnzahl = 300;
 let rasenPositionen = {};
+let flowerPositionen = {};
 let keysState = {};
 const isFirefox = navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
 let score = 0;
@@ -85,17 +88,28 @@ socket.on('rasenPartikel', (data) => {
     rasenPositionen = data;
 });
 
+socket.on('flowers', (data) => {
+    flowerPositionen = data;
+});
+
 socket.on('RemoveRasenPartikel', (data) => {
     data.forEach(element => {
-        console.log(rasenPositionen[element]);
         delete rasenPositionen[element];
     });
 });
 
-socket.on('AddRasenPartikel', (data) => {
-    console.log(data);
+socket.on('RemoveFlowers', (data) => {
+    data.forEach(element => {
+        delete flowerPositionen[element];
+    });
+});
 
+socket.on('AddRasenPartikel', (data) => {
     Object.assign(rasenPositionen, data);
+});
+
+socket.on('AddFlower', (data) => {
+    Object.assign(flowerPositionen, data);
 });
 
 // Fügen Sie Eventlistener für keydown und keyup hinzu
@@ -236,6 +250,13 @@ function animate() {
             const element = rasenPositionen[key];
             ctx.fillStyle = "rgb(88, 114, 36)";
             ctx.fillRect(element[0], element[1], 10, 10); // x, y, width, height
+        }
+    }
+
+    for (const key in flowerPositionen) {
+        if (Object.hasOwnProperty.call(flowerPositionen, key)) {
+            const element = flowerPositionen[key];
+            ctx.drawImage(flowerImg, element[0] - 15, element[1] - 15, 30, 30);
         }
     }
 
