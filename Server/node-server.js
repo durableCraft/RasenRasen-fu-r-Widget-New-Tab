@@ -2,6 +2,7 @@
 
 const express = require('express');
 const https = require('https'); /* use http for development only, otherwise http(s)! */
+const http = require('http');
 const hostname = 'lucapleger.com';
 const socketIO = require('socket.io');
 const path = require('path');
@@ -341,4 +342,13 @@ io.on('connection', (socket) => {
 
 serverHTTPS.listen(443, () => {
     console.log('Server läuft auf Port 443');
+});
+
+// Hier startet der HTTP-Server für die Weiterleitung
+const httpServer = http.createServer((req, res) => {
+    res.writeHead(301, { "Location": `https://${req.headers['host']}${req.url}` });
+    res.end();
+});
+httpServer.listen(80, () => {
+    console.log('HTTP Server läuft auf Port 80 und leitet auf HTTPS um');
 });
