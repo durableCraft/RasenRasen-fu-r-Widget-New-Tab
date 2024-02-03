@@ -130,22 +130,18 @@ socket.on('AddFlower', (data) => {
 // Fügen Sie Eventlistener für keydown und keyup hinzu
 window.addEventListener('keydown', function (event) {
     keysState[event.keyCode] = true;
-    /* updateMotionAndRotation(); */
 });
 
 window.addEventListener('keyup', function (event) {
     keysState[event.keyCode] = false;
-    /* updateMotionAndRotation(); */
 });
 
 function emulateKeyPress(keyCode) {
     keysState[keyCode] = true;
-    /* updateMotionAndRotation(); */
 }
 
 function emulateKeyUp(keyCode) {
     keysState[keyCode] = false;
-    /* updateMotionAndRotation(); */
 }
 
 function emulateKeyUpAll() {
