@@ -130,22 +130,22 @@ socket.on('AddFlower', (data) => {
 // Fügen Sie Eventlistener für keydown und keyup hinzu
 window.addEventListener('keydown', function (event) {
     keysState[event.keyCode] = true;
-    updateMotionAndRotation();
+    /* updateMotionAndRotation(); */
 });
 
 window.addEventListener('keyup', function (event) {
     keysState[event.keyCode] = false;
-    updateMotionAndRotation();
+    /* updateMotionAndRotation(); */
 });
 
 function emulateKeyPress(keyCode) {
     keysState[keyCode] = true;
-    updateMotionAndRotation();
+    /* updateMotionAndRotation(); */
 }
 
 function emulateKeyUp(keyCode) {
     keysState[keyCode] = false;
-    updateMotionAndRotation();
+    /* updateMotionAndRotation(); */
 }
 
 function emulateKeyUpAll() {
@@ -153,7 +153,7 @@ function emulateKeyUpAll() {
     keysState[65] = false;
     keysState[83] = false;
     keysState[68] = false;
-    updateMotionAndRotation();
+    /* updateMotionAndRotation(); */
 }
 
 window.addEventListener('touchcancel', function () {
@@ -259,6 +259,7 @@ function gamelogic() {
         startmowerPositionY = canvas.height - mowerSize;
     }
 
+    updateMotionAndRotation();
     requestAnimationFrame(gamelogic);
 }
 
