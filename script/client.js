@@ -36,9 +36,11 @@ rockImg.src = 'images/rock.png';
 const pegImg = new Image;
 pegImg.src = 'images/peg.png';
 
-let fps = 60; /* Frames per Second */
+const fps = 25; /* Frames per Second zur Übertragung an Socket */
 let renderFPS = 0;
+let logicFPS = 0;
 let displayRenderFPS = 0;
+let displayLogicFPS = 0;
 const socket = io();
 let clientID = "undefined";
 
@@ -46,6 +48,7 @@ const mowerSize = 100;
 let motionX = 0;
 let motionY = 0;
 const mowerSpeed = 4;
+let offsetMowerSpeed = mowerSpeed;
 let startmowerPositionX = (canvas.width / 2) - (mowerSize / 2);
 let startmowerPositionY = (canvas.height / 2) - (mowerSize / 2);
 let mowerRotation = 0;
@@ -58,6 +61,7 @@ let keysState = {};
 const isFirefox = navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
 let score = 0;
 let cooldown = 0;
+let lastUpdatedDate = new Date().getTime();
 
 function isTouchScreen() {
     return 'ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0;
@@ -125,6 +129,7 @@ socket.on('AddFlower', (data) => {
 
 // Fügen Sie Eventlistener für keydown und keyup hinzu
 window.addEventListener('keydown', function (event) {
+    if (keysState[event.keyCode] === true) return;
     keysState[event.keyCode] = true;
     updateMotionAndRotation();
 });
@@ -169,19 +174,19 @@ function updateMotionAndRotation() {
 
     // Überprüfen der Tasten und Anpassung der Bewegung und Rotation
     if (keysState[87]) { // W
-        motionY = -mowerSpeed;
+        motionY = -offsetMowerSpeed;
         targetRotation = 270;
     }
     if (keysState[65]) { // A
-        motionX = -mowerSpeed;
+        motionX = -offsetMowerSpeed;
         targetRotation = 180;
     }
     if (keysState[83]) { // S
-        motionY = mowerSpeed;
+        motionY = offsetMowerSpeed;
         targetRotation = 90;
     }
     if (keysState[68]) { // D
-        motionX = mowerSpeed;
+        motionX = offsetMowerSpeed;
         targetRotation = 0;
     }
 
@@ -211,7 +216,7 @@ function updateMotionAndRotation() {
 
 /* Developer Anzeige */
 setInterval(() => {
-    document.getElementById('dev_anzeige').textContent = 'RasenRasen Client-ID: ' + clientID + ' Motion-X: ' + motionX + ' Motion-Y: ' + motionY + ' Rotation: ' + mowerRotation + ' Engine-FPS: ' + fps + ' FPS: ' + displayRenderFPS;
+    document.getElementById('dev_anzeige').textContent = 'RasenRasen Client-ID: ' + clientID + ' Motion-X: ' + motionX + ' Motion-Y: ' + motionY + ' Rotation: ' + mowerRotation + ' Engine-FPS: ' + displayLogicFPS + ' FPS: ' + displayRenderFPS;
     document.getElementById('score').textContent = 'Score: ' + score;
 }, 800);
 
@@ -223,6 +228,15 @@ function getRandomInteger(min, max) {
 }
 
 function gamelogic() {
+    logicFPS++;
+    const currentTime = new Date().getTime();
+    const timeOffset = currentTime - lastUpdatedDate;
+    const offsetSpeedMultiplier = (1000 / 60) / timeOffset;
+    console.log(timeOffset);
+    lastUpdatedDate = currentTime;
+
+    offsetMowerSpeed = mowerSpeed / offsetSpeedMultiplier;
+
     startmowerPositionX += motionX;
     startmowerPositionY += motionY;
 
@@ -231,7 +245,7 @@ function gamelogic() {
     angleDiff = ((angleDiff + 180) % 360 + 360) % 360 - 180;
 
     // Drehung anpassen (maximal 10 Grad pro Schritt)
-    let rotationStep = Math.sign(angleDiff) * Math.min(10, Math.abs(angleDiff));
+    let rotationStep = Math.sign(angleDiff) * Math.min(10 / offsetSpeedMultiplier, Math.abs(angleDiff));
     mowerRotation = (mowerRotation + rotationStep + 360) % 360;
 
     if (startmowerPositionX < 0) {
@@ -245,6 +259,8 @@ function gamelogic() {
     } else if (startmowerPositionY + mowerSize > canvas.height) {
         startmowerPositionY = canvas.height - mowerSize;
     }
+
+    requestAnimationFrame(gamelogic);
 }
 
 function socketemit() {
@@ -383,17 +399,17 @@ function animate() {
     requestAnimationFrame(animate);
 }
 
-setInterval(() => {
-    gamelogic();
-}, 1000 / fps);
+requestAnimationFrame(gamelogic);
 
 setInterval(() => {
     socketemit();
-}, 1000 / (fps / 2));
+}, 1000 / fps);
 
 setInterval(() => {
     displayRenderFPS = renderFPS;
     renderFPS = 0;
+    displayLogicFPS = logicFPS;
+    logicFPS = 0;
 
     if (cooldown > 0) {
         cooldown = cooldown - 1;
