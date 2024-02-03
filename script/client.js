@@ -389,8 +389,6 @@ function animate() {
 
                 ctx.restore();
             }
-
-            /* ctx.drawImage(mowerImg, serverInfo[key][0], serverInfo[key][1], mowerSize, mowerSize); */
         }
     }
 
