@@ -251,17 +251,15 @@ io.on('connection', (socket) => {
         }
     });
 
-    // Beispiel: Empfange eine Variable vom Client
+    //Empfange eine Variable vom Client
     socket.on('clientInfo', (data) => {
         serverInfo[socket.id] = [data[0], data[1], data[2], data[3], data[4]];
 
         gamelogic(data[0] + 50, data[1] + 50, 40, socket.id);
-    });
 
-    // Beispiel: Sende eine Variable an den Client
-    setInterval(() => {
+        //Sende eine Variable an den Client
         socket.emit('serverInfo', serverInfo);
-    }, 1000 / fps);
+    });
 
     /* Rasenpartikel etc senden */
     socket.emit('rasenPartikel', rasenPositionen);
