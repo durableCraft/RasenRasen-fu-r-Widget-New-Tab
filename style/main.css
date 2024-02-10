@@ -359,3 +359,29 @@ footer #footer_overflow {
 
     cursor: help;
 }
+
+#joystick-container {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 50%;
+
+    display: none;
+    align-items: center;
+    justify-content: center;
+    touch-action: none;
+}
+
+#joystick {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background: rgb(52, 52, 52, 0.6);
+    background: radial-gradient(circle, rgba(52, 52, 52, 0.6) 0%, rgb(34, 34, 34, 0.6) 100%);
+
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+
+    border-radius: 50%;
+}
