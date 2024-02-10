@@ -226,7 +226,6 @@ function gamelogic() {
     const currentTime = new Date().getTime();
     const timeOffset = currentTime - lastUpdatedDate;
     const offsetSpeedMultiplier = (1000 / 60) / timeOffset;
-    console.log(timeOffset);
     lastUpdatedDate = currentTime;
 
     offsetMowerSpeed = mowerSpeed / offsetSpeedMultiplier;
@@ -267,9 +266,11 @@ function socketemit() {
             if (abstand <= 40) {
                 score = Math.max(score - 10, 0); /* Score -10 */
                 cooldown = 2;
+                
                 document.getElementById('score_damage').style.animation = 'none';
                 void document.getElementById('score_damage').offsetWidth;
                 document.getElementById('score_damage').style.animation = null;
+                document.getElementById('score_damage').style.animationPlayState = 'running';
             }
         }
     }
@@ -546,10 +547,5 @@ window.addEventListener('touchmove', function (event) {
 window.addEventListener('touchcancel', touchend);
 window.addEventListener('touchend', touchend);
 
-setInterval(() => {
-    document.getElementById('dev').textContent = 'motionX: ' + motionX + ', motionY: ' + motionY;
-}, 50);
-
 window.addEventListener('load', mobileResizeFeature);
-
 window.addEventListener('resize', mobileResizeFeature);

@@ -337,6 +337,7 @@ footer #footer_overflow {
     transform: translateY(0px);
 
     animation: score-damage 1s ease-out;
+    animation-play-state: paused;
 }
 
 #warning {
@@ -366,6 +367,9 @@ footer #footer_overflow {
     height: 80px;
     background-color: rgba(0, 0, 0, 0.3);
     border-radius: 50%;
+    overflow: visible;
+
+    z-index: 99;
 
     display: none;
     align-items: center;
