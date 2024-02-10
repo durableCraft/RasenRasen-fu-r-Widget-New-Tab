@@ -82,13 +82,34 @@ function getMowerColor() {
 }
 
 let mowerColor = getMowerColor();
-let clientInfo = [startmowerPositionX, startmowerPositionY, mowerColor, mowerRotation, score];
+let clientInfo = [startmowerPositionX, startmowerPositionY, mowerRotation, mowerColor, score];
 let serverInfo = {};
 mowerImg.src = mowerURL[mowerColor];
 
 socket.on('clientID', (data) => {
     clientID = data;
 });
+
+function interpolateMowerPosition(offsetMowerSpeed, offsetSpeedMultiplier) {
+    for (const key in serverInfo) {
+        if (Object.hasOwnProperty.call(serverInfo, key)) {
+            const element = serverInfo[key];
+
+            const deltaX = Math.sign(element[0] - element[5]);
+            const deltaY = Math.sign(element[1] - element[6]);
+
+            // Kürzesten Drehwinkel zwischen aktueller Rotation und Zielrotation berechnen
+            const angleDiff = (((element[2] - element[7]) + 180) % 360 + 360) % 360 - 180;
+
+            // Drehung anpassen (maximal 10 Grad pro Schritt)
+            let rotationStep = Math.sign(angleDiff) * Math.min(10 / offsetSpeedMultiplier, Math.abs(angleDiff));
+
+            serverInfo[key][5] = element[5] + deltaX * offsetMowerSpeed;
+            serverInfo[key][6] = element[6] + deltaY * offsetMowerSpeed;
+            serverInfo[key][7] = (element[7] + rotationStep + 360) % 360;
+        }
+    }
+}
 
 socket.on('serverInfo', (data) => {
     serverInfo = data;
@@ -233,6 +254,8 @@ function gamelogic() {
     startmowerPositionX += motionX;
     startmowerPositionY += motionY;
 
+    interpolateMowerPosition(offsetMowerSpeed, offsetSpeedMultiplier);
+
     // Kürzesten Drehwinkel zwischen aktueller Rotation und Zielrotation berechnen
     let angleDiff = targetRotation - mowerRotation;
     angleDiff = ((angleDiff + 180) % 360 + 360) % 360 - 180;
@@ -266,7 +289,7 @@ function socketemit() {
             if (abstand <= 40) {
                 score = Math.max(score - 10, 0); /* Score -10 */
                 cooldown = 2;
-                
+
                 document.getElementById('score_damage').style.animation = 'none';
                 void document.getElementById('score_damage').offsetWidth;
                 document.getElementById('score_damage').style.animation = null;
@@ -336,10 +359,10 @@ function animate() {
                 ctx.save();
 
                 // Den Ursprung auf die Mitte des Bildes verschieben
-                ctx.translate(serverInfo[key][0] + mowerSize / 2, serverInfo[key][1] + mowerSize / 2);
+                ctx.translate(serverInfo[key][5] + mowerSize / 2, serverInfo[key][6] + mowerSize / 2);
 
                 // Das Bild um die eigene Achse drehen
-                ctx.rotate(serverInfo[key][2] * Math.PI / 180);
+                ctx.rotate(serverInfo[key][7] * Math.PI / 180);
 
                 // Das Bild zeichnen (Berücksichtigen Sie die Verschiebung des Ursprungs)
                 let differentMower;
@@ -380,8 +403,8 @@ function animate() {
                 ctx.drawImage(differentMower, -mowerSize / 2, -mowerSize / 2, mowerSize, mowerSize);
 
                 // Die Transformationen zurücksetzen
-                ctx.rotate(-mowerRotation * Math.PI / 180);
-                ctx.translate(-(serverInfo[key][0] + mowerSize / 2), -(serverInfo[key][1] + mowerSize / 2));
+                ctx.rotate(-serverInfo[key][7] * Math.PI / 180);
+                ctx.translate(-(serverInfo[key][5] + mowerSize / 2), -(serverInfo[key][6] + mowerSize / 2));
 
                 ctx.restore();
             }

@@ -235,6 +235,21 @@ function gamelogic(x, y, radius, socketIdent) {
     }
 }
 
+setInterval(() => {
+    //Sende eine Variable an den Client
+    io.emit('serverInfo', serverInfo);
+
+    for (const key in serverInfo) {
+        if (Object.hasOwnProperty.call(serverInfo, key)) {
+            const element = serverInfo[key];
+            
+            element[5] = element[0];
+            element[6] = element[1];
+            element[7] = element[2];
+        }
+    }
+}, 120);
+
 io.on('connection', (socket) => {
     socket.emit('clientID', socket.id);
 
@@ -258,13 +273,20 @@ io.on('connection', (socket) => {
 
     //Empfange eine Variable vom Client
     socket.on('clientInfo', (data) => {
-        serverInfo[socket.id] = [data[0], data[1], data[2], data[3], data[4]];
+        if (!serverInfo[socket.id]) {
+            serverInfo[socket.id] = [data[0], data[1], data[2], data[3], data[4]];
+        } else {
+            serverInfo[socket.id][0] = data[0];
+            serverInfo[socket.id][1] = data[1];
+            serverInfo[socket.id][2] = data[2];
+            serverInfo[socket.id][3] = data[3];
+            serverInfo[socket.id][4] = data[4];
+        }
 
         gamelogic(data[0] + 50, data[1] + 50, 40, socket.id);
-
-        //Sende eine Variable an den Client
-        socket.emit('serverInfo', serverInfo);
     });
+
+    socket.emit('serverInfo', serverInfo);
 
     /* Rasenpartikel etc senden */
     socket.emit('rasenPartikel', rasenPositionen);
