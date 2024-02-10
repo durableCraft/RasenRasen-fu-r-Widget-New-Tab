@@ -149,7 +149,6 @@ function emulateKeyUpAll() {
     keysState[65] = false;
     keysState[83] = false;
     keysState[68] = false;
-    /* updateMotionAndRotation(); */
 }
 
 window.addEventListener('touchcancel', function () {
@@ -227,7 +226,6 @@ function gamelogic() {
     const currentTime = new Date().getTime();
     const timeOffset = currentTime - lastUpdatedDate;
     const offsetSpeedMultiplier = (1000 / 60) / timeOffset;
-    console.log(timeOffset);
     lastUpdatedDate = currentTime;
 
     offsetMowerSpeed = mowerSpeed / offsetSpeedMultiplier;
@@ -268,9 +266,11 @@ function socketemit() {
             if (abstand <= 40) {
                 score = Math.max(score - 10, 0); /* Score -10 */
                 cooldown = 2;
+                
                 document.getElementById('score_damage').style.animation = 'none';
                 void document.getElementById('score_damage').offsetWidth;
                 document.getElementById('score_damage').style.animation = null;
+                document.getElementById('score_damage').style.animationPlayState = 'running';
             }
         }
     }
@@ -454,6 +454,98 @@ function mobileResizeFeature() {
     }
 }
 
-window.addEventListener('load', mobileResizeFeature);
+/* Touch Controller */
 
+const joystickContainer = document.getElementById('joystick-container');
+const joystick = document.getElementById('joystick');
+
+function touchend() {
+    emulateKeyUpAll();
+    joystickContainer.style.display = 'none';
+    joystick.style.transform = 'translate(0, 0)';
+}
+
+function getDirection(x, y) {
+    const angle = Math.atan2(y, x);
+    const angleInDegrees = (angle * 180) / Math.PI;
+
+    if (angleInDegrees >= -22.5 && angleInDegrees < 22.5) {
+        emulateKeyUpAll();
+        emulateKeyPress(68);
+        /* return 'right'; */
+    } else if (angleInDegrees >= 22.5 && angleInDegrees < 67.5) {
+        emulateKeyUpAll();
+        emulateKeyPress(68);
+        emulateKeyPress(83);
+        /* return 'down-right'; */
+    } else if (angleInDegrees >= 67.5 && angleInDegrees < 112.5) {
+        emulateKeyUpAll();
+        emulateKeyPress(83);
+        /* return 'down'; */
+    } else if (angleInDegrees >= 112.5 && angleInDegrees < 157.5) {
+        emulateKeyUpAll();
+        emulateKeyPress(83);
+        emulateKeyPress(65);
+        /* return 'down-left'; */
+    } else if (angleInDegrees >= 157.5 || angleInDegrees < -157.5) {
+        emulateKeyUpAll();
+        emulateKeyPress(65);
+        /* return 'left'; */
+    } else if (angleInDegrees >= -157.5 && angleInDegrees < -112.5) {
+        emulateKeyUpAll();
+        emulateKeyPress(65);
+        emulateKeyPress(87);
+        /* return 'up-left'; */
+    } else if (angleInDegrees >= -112.5 && angleInDegrees < -67.5) {
+        emulateKeyUpAll();
+        emulateKeyPress(87);
+        /* return 'up'; */
+    } else if (angleInDegrees >= -67.5 && angleInDegrees < -22.5) {
+        emulateKeyUpAll();
+        emulateKeyPress(87);
+        emulateKeyPress(68);
+        /* return 'up-right'; */
+    }
+}
+
+window.addEventListener('touchstart', function (event) {
+    let touch = event.touches[0];
+    const posX = touch.clientX - 40;
+    const posY = touch.clientY - 40;
+
+    joystickContainer.style.display = 'flex';
+
+    joystickContainer.style.top = posY + 'px';
+    joystickContainer.style.left = posX + 'px';
+});
+
+window.addEventListener('touchmove', function (event) {
+    if (joystickContainer.style.display !== 'none') {
+        let touch = event.touches[0];
+        let posX = touch.clientX - 40 - joystickContainer.offsetLeft;
+        let posY = touch.clientY - 40 - joystickContainer.offsetTop;
+
+        const maxRadius = 30;
+        const distance = Math.sqrt(posX ** 2 + posY ** 2);
+
+        if (distance > maxRadius) {
+            const angle = Math.atan2(posY, posX);
+
+            posX = Math.cos(angle) * maxRadius;
+            posY = Math.sin(angle) * maxRadius;
+        }
+
+        const offsetX = posX / maxRadius;
+        const offsetY = posY / maxRadius;
+
+        getDirection(offsetX, offsetY);
+
+        joystick.style.transform = 'translate(' + posX + 'px, ' + posY + 'px)';
+    }
+});
+
+window.addEventListener('touchcancel', touchend);
+window.addEventListener('touchend', touchend);
+
+window.addEventListener('load', mobileResizeFeature);
 window.addEventListener('resize', mobileResizeFeature);
