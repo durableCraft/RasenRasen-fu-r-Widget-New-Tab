@@ -1,0 +1,187 @@
+@keyframes dash {
+    to {
+        stroke-dashoffset: 0;
+        fill: #f9f9f9;
+    }
+}
+
+@keyframes comdash {
+    to {
+        stroke-dashoffset: 0;
+        fill: #cccccc;
+    }
+}
+
+.defaultPath {
+    font-weight: bold;
+    font-family: 'Helvetica Neue';
+    fill: #f9f9f900;
+    stroke: #f9f9f9;
+    stroke-width: 1;
+    stroke-dasharray: 400;
+    stroke-dashoffset: 400;
+    animation: dash 2500ms ease-in forwards;
+}
+
+.comPath {
+    font-weight: bold;
+    font-family: 'Helvetica Neue';
+    fill: #cccccc00;
+    stroke: #cccccc;
+    stroke-width: 1;
+    stroke-dasharray: 400;
+    stroke-dashoffset: 400;
+    animation: comdash 2500ms ease-in forwards;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    height: 100vh;
+    width: 100vw;
+}
+
+body {
+    padding: 20px;
+
+    height: 100%;
+    width: 100%;
+
+    background: rgb(242, 242, 242);
+
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: flex-start;
+}
+
+header {
+    height: 40px;
+    width: 100%;
+    max-width: 950px;
+
+    margin-bottom: 14px;
+
+    border-radius: 4px 4px;
+    outline: 1px solid rgba(0, 0, 0, 0.5);
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2), inset 0 0 15px rgba(255, 255, 255, 0.2);
+    background: rgb(141, 141, 141);
+    background: linear-gradient(180deg, rgba(141, 141, 141, 1) 0%, rgba(112, 112, 113, 1) 48%, rgba(95, 95, 94, 1) 49%, rgba(120, 120, 120, 1) 100%);
+}
+
+.header_container {
+    height: 46px;
+    width: 100%;
+    max-width: 950px;
+
+    overflow-x: auto;
+    overflow-y: visible;
+}
+
+::-webkit-scrollbar {
+    height: 3px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #00000000;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #555;
+    border-radius: 1.5px 1.5px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #414141;
+}
+
+.header_div {
+    min-height: 40px;
+    min-width: 800px;
+
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: center;
+}
+
+svg {
+    height: 30px;
+    width: fit-content;
+}
+
+.lucapleger_home {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: center;
+}
+
+.header_btn {
+    height: 40px;
+    width: 160px;
+
+    border-radius: 4px 4px;
+
+    color: white;
+    border: none;
+    outline: none;
+    background: rgba(0, 0, 0, 0);
+
+    cursor: pointer;
+}
+
+.header_btn:hover {
+    background: rgba(0, 0, 0, 0.4);
+    box-shadow: inset 0 0 12px rgba(255, 255, 255, 0.15);
+}
+
+.current_btn {
+    background-color: rgb(61, 61, 61);
+    box-shadow: inset 0 0 16px rgba(0, 0, 0, 0.5);
+}
+
+.current_btn:hover {
+    background-color: rgb(61, 61, 61);
+    box-shadow: inset 0 0 16px rgba(0, 0, 0, 0.2);
+}
+
+main {
+    min-height: 600px;
+    height: fit-content;
+    width: 100%;
+    max-width: 950px;
+    padding: 20px;
+
+    border-radius: 4px 4px;
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2), inset 0 0 15px rgba(255, 255, 255, 0.2);
+    background: rgb(255, 255, 255);
+}
+
+p {
+    margin-bottom: 20px;
+}
+
+.fullwidth {
+    height: auto;
+    width: 100%;
+
+    padding: 20px;
+
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: center;
+}
+
+.cubeimg {
+    height: 300px;
+    width: auto;
+}
