@@ -195,6 +195,16 @@ app.get('/images/rubik_images/D_inv.png', (req, res) => {
     res.sendFile(indexPath);
 });
 
+app.get('/images/rubik_images/D.png', (req, res) => {
+    const indexPath = path.join(currentWorkingDirectory, '..', 'images', 'rubik_images', 'D.png');
+    res.sendFile(indexPath);
+});
+
+app.get('/images/rubik_images/R.png', (req, res) => {
+    const indexPath = path.join(currentWorkingDirectory, '..', 'images', 'rubik_images', 'R.png');
+    res.sendFile(indexPath);
+});
+
 /* 404 Seite bei ungültigem Pfad. */
 app.use((req, res, next) => {
     res.status(404).sendFile(path.join(currentWorkingDirectory, '..', '404.html'));
