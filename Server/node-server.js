@@ -159,6 +159,42 @@ app.get('/sitemap.xml', (req, res) => {
     res.sendFile(indexPath);
 });
 
+/* Rubiks Seite */
+app.get('/rubikscube', (req, res) => {
+    const indexPath = path.join(currentWorkingDirectory, '..', 'rubikscube.html');
+    res.sendFile(indexPath);
+});
+
+app.get('/zauberw%C3%BCrfel', (req, res) => {
+    const indexPath = path.join(currentWorkingDirectory, '..', 'rubikscube.html');
+    res.sendFile(indexPath);
+});
+
+app.get('/images/cube_orientation.png', (req, res) => {
+    const indexPath = path.join(currentWorkingDirectory, '..', 'images', 'cube_orientation.png');
+    res.sendFile(indexPath);
+});
+
+app.get('/style/rubiks.css', (req, res) => {
+    const indexPath = path.join(currentWorkingDirectory, '..', 'style', 'rubiks.css');
+    res.sendFile(indexPath);
+});
+
+app.get('/script/rubiks.js', (req, res) => {
+    const indexPath = path.join(currentWorkingDirectory, '..', 'script', 'rubiks.js');
+    res.sendFile(indexPath);
+});
+
+app.get('/images/rubik_images/R_inv.png', (req, res) => {
+    const indexPath = path.join(currentWorkingDirectory, '..', 'images', 'rubik_images', 'R_inv.png');
+    res.sendFile(indexPath);
+});
+
+app.get('/images/rubik_images/D_inv.png', (req, res) => {
+    const indexPath = path.join(currentWorkingDirectory, '..', 'images', 'rubik_images', 'D_inv.png');
+    res.sendFile(indexPath);
+});
+
 /* 404 Seite bei ungültigem Pfad. */
 app.use((req, res, next) => {
     res.status(404).sendFile(path.join(currentWorkingDirectory, '..', '404.html'));

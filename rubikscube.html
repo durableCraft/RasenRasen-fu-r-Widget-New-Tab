@@ -21,6 +21,9 @@
     <header>
         <div class="header_container">
             <div class="header_div">
+                <div class="spacer_left_header">
+
+                </div>
                 <button class="header_btn lucapleger_home"><svg width="177" height="122" viewBox="0 0 177 122" version="1.1"
                         id="logoluca">
                         <path
@@ -67,7 +70,10 @@
                 <button class="header_btn projects">Projekte</button>
                 <button class="header_btn about">Über Luca</button>
                 <button class="header_btn github">GitHub</button>
-                <button class="header_btn current_btn rubiks">Zauberwürfel-Anleitung</button>
+                <button class="header_btn current_btn rubiks">Zauberwürfel</button>
+                <div class="spacer_right_header">
+
+                </div>
             </div>
         </div>
     </header>
@@ -84,13 +90,28 @@
             <div class="fullwidth">
                 <img src="images/cube_orientation.png" alt="Ausrichtung des Zauberwürfels" class="cubeimg">
             </div>
-            In diesem Tutorial sind nur die Seiten F, R, U und L relevant. Beispiel: F bedeutet, dass die Seite Front im Uhrzeigersinn gedreht werden soll. F' bedeutet, dass die Seite Front gegen den Uhrzeigersinn gedreht werden soll.
+            In diesem Tutorial sind nur die Seiten F, R, U, L und D relevant. Beispiel: F bedeutet, dass die Seite Front im Uhrzeigersinn gedreht werden soll. F' bedeutet, dass die Seite Front gegen den Uhrzeigersinn gedreht werden soll.
         </p>
         <p>
             <h3>1. Das weiße Kreuz</h3>
             <br>
             Der Zauberwürfel wird in seine drei Schichten unterteilt und nacheinander gelöst. Zuerst lösen wir das weiße Kreuz. <br>
-            Drehe dazu als erstes von der unterseite den passenden Stein unter die Position, an der dieser nachher sein soll. Der passende Algorythmus ist:
+            Bewege dazu als erstes die Mittelsteine an die richtigen Positionen. Für diesen Schritt gibt es keine Algorithmen. <br>
+            <br>
+            <h3>2. Die weißen Ecken</h3>
+            <br>
+            Der Stein wird an der Unter seite zwischen die beiden passenden Seiten bewegt. <br>
+            <br>
+            <b>r'; d'; r; d;</b> <br>
+            <div class="algo_display">
+                <img src="images/rubik_images/R_inv.png" alt="Right-inverted" class="algo_disp_img">
+                <img src="images/rubik_images/R_inv.png" alt="Down-inverted" class="algo_disp_img">
+                <img src="images/rubik_images/R_inv.png" alt="Right" class="algo_disp_img">
+                <img src="images/rubik_images/R_inv.png" alt="Down" class="algo_disp_img">
+            </div>
+            <br>
+            Dieser Algorithmus wird einfach so lange wiederholt, bis der Stein passt. (Alternativ kann man auch den Algorithmus leicht anpassen um den Stein sofort einzusetzen.) <br>
+            <br>
         </p>
     </main>
 </body>

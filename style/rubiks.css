@@ -38,6 +38,12 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+
+    font-family: Arial, Helvetica, sans-serif;
+
+    user-select: text;
+    -webkit-user-select: text;
+    -webkit-user-drag: none;
 }
 
 html {
@@ -48,7 +54,7 @@ html {
 body {
     padding: 20px;
 
-    height: 100%;
+    height: max-content;
     width: 100%;
 
     background: rgb(242, 242, 242);
@@ -60,21 +66,25 @@ body {
 }
 
 header {
-    height: 40px;
+    height: 36px;
     width: 100%;
     max-width: 950px;
 
     margin-bottom: 14px;
 
-    border-radius: 4px 4px;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+
+    border-radius: 3px 3px;
     outline: 1px solid rgba(0, 0, 0, 0.5);
-    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2), inset 0 0 15px rgba(255, 255, 255, 0.2);
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 2px 0px;
     background: rgb(141, 141, 141);
     background: linear-gradient(180deg, rgba(141, 141, 141, 1) 0%, rgba(112, 112, 113, 1) 48%, rgba(95, 95, 94, 1) 49%, rgba(120, 120, 120, 1) 100%);
 }
 
 .header_container {
-    height: 46px;
+    height: 42px;
     width: 100%;
     max-width: 950px;
 
@@ -103,8 +113,11 @@ header {
 }
 
 .header_div {
-    min-height: 40px;
-    min-width: 800px;
+    min-height: 36px;
+    min-width: 640px;
+
+    border-radius: 3px 3px;
+    overflow: hidden;
 
     display: flex;
     flex-wrap: wrap;
@@ -113,7 +126,7 @@ header {
 }
 
 svg {
-    height: 30px;
+    height: 28px;
     width: fit-content;
 }
 
@@ -124,18 +137,37 @@ svg {
     align-content: center;
 }
 
-.header_btn {
-    height: 40px;
-    width: 160px;
+.spacer_left_header {
+    height: 36px;
+    width: 0;
+    border-right: rgb(126, 126, 126) 1px solid;
+}
 
-    border-radius: 4px 4px;
+.spacer_right_header {
+    height: 36px;
+    width: 0;
+    border-left: rgb(126, 126, 126) 1px solid;
+}
+
+.header_btn {
+    height: 36px;
+    width: 120px;
 
     color: white;
     border: none;
+    border-left: rgb(87, 87, 87) 1px solid;
     outline: none;
+    box-shadow: inset 1px 0 1px -1px rgb(204, 204, 204), inset -1px 0 1px -1px rgb(204, 204, 204);
     background: rgba(0, 0, 0, 0);
 
+    font: 12px/18px "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
+    font-weight: 400;
+
     cursor: pointer;
+
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
 }
 
 .header_btn:hover {
@@ -160,8 +192,8 @@ main {
     max-width: 950px;
     padding: 20px;
 
-    border-radius: 4px 4px;
-    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2), inset 0 0 15px rgba(255, 255, 255, 0.2);
+    border-radius: 3px 3px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
     background: rgb(255, 255, 255);
 }
 
@@ -184,4 +216,21 @@ p {
 .cubeimg {
     height: 300px;
     width: auto;
+}
+
+.algo_display {
+    height: 60px;
+    width: 100%;
+
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: left;
+    align-content: center;
+}
+
+.algo_disp_img {
+    height: 40px;
+    width: auto;
+
+    margin-right: 10px;
 }
