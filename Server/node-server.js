@@ -1,7 +1,7 @@
 "use strict";
 
 const express = require('express');
-const https = require('https'); /* use http for development only, otherwise http(s)! */
+const https = require('http'); /* use http for development only, otherwise http(s)! */
 const http = require('http');
 const hostname = 'lucapleger.com';
 const socketIO = require('socket.io');
@@ -156,6 +156,52 @@ app.get('/assets/Silkscreen/Silkscreen-Bold.ttf', (req, res) => {
 
 app.get('/sitemap.xml', (req, res) => {
     const indexPath = path.join(currentWorkingDirectory, '..', 'assets', 'sitemap.xml');
+    res.sendFile(indexPath);
+});
+
+/* Rubiks Seite */
+app.get('/rubikscube', (req, res) => {
+    const indexPath = path.join(currentWorkingDirectory, '..', 'rubikscube.html');
+    res.sendFile(indexPath);
+});
+
+app.get('/zauberw%C3%BCrfel', (req, res) => {
+    const indexPath = path.join(currentWorkingDirectory, '..', 'rubikscube.html');
+    res.sendFile(indexPath);
+});
+
+app.get('/images/cube_orientation.png', (req, res) => {
+    const indexPath = path.join(currentWorkingDirectory, '..', 'images', 'cube_orientation.png');
+    res.sendFile(indexPath);
+});
+
+app.get('/style/rubiks.css', (req, res) => {
+    const indexPath = path.join(currentWorkingDirectory, '..', 'style', 'rubiks.css');
+    res.sendFile(indexPath);
+});
+
+app.get('/script/rubiks.js', (req, res) => {
+    const indexPath = path.join(currentWorkingDirectory, '..', 'script', 'rubiks.js');
+    res.sendFile(indexPath);
+});
+
+app.get('/images/rubik_images/R_inv.png', (req, res) => {
+    const indexPath = path.join(currentWorkingDirectory, '..', 'images', 'rubik_images', 'R_inv.png');
+    res.sendFile(indexPath);
+});
+
+app.get('/images/rubik_images/D_inv.png', (req, res) => {
+    const indexPath = path.join(currentWorkingDirectory, '..', 'images', 'rubik_images', 'D_inv.png');
+    res.sendFile(indexPath);
+});
+
+app.get('/images/rubik_images/D.png', (req, res) => {
+    const indexPath = path.join(currentWorkingDirectory, '..', 'images', 'rubik_images', 'D.png');
+    res.sendFile(indexPath);
+});
+
+app.get('/images/rubik_images/R.png', (req, res) => {
+    const indexPath = path.join(currentWorkingDirectory, '..', 'images', 'rubik_images', 'R.png');
     res.sendFile(indexPath);
 });
 
